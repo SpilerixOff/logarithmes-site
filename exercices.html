@@ -1,163 +1,291 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QCM & Exercices – Logarithmes</title>
-  <link rel="stylesheet" href="styles.css">
-  <script defer src="script.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Certificat – Spilerix</title>
+  <style>
+    /* =============================
+       DESIGN GÉNÉRAL
+    ============================== */
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: radial-gradient(circle at center, #1a1125, #08030f);
+      color: white;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    canvas.bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    /* =============================
+       CARTE DU CERTIFICAT
+    ============================== */
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid #a88bff;
+      border-radius: 25px;
+      padding: 50px 70px;
+      box-shadow: 0 0 35px rgba(168, 139, 255, 0.3);
+      position: relative;
+      animation: fadeIn 1.2s ease-in-out;
+      max-width: 800px;
+      backdrop-filter: blur(10px);
+    }
+
+    .border-light {
+      position: absolute;
+      inset: 0;
+      border-radius: 25px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* =============================
+       TITRES ET TEXTES
+    ============================== */
+    h1 {
+      font-size: 2.6em;
+      color: #f5e6ff;
+      text-shadow: 0 0 20px #a88bff;
+      margin-bottom: 15px;
+      letter-spacing: 1px;
+    }
+
+    h2 {
+      color: #d7baff;
+      font-size: 1.4em;
+      margin-bottom: 25px;
+      letter-spacing: 0.6px;
+    }
+
+    .name {
+      font-size: 2.3em;
+      font-weight: 700;
+      color: #ffd166;
+      text-shadow: 0 0 30px #ffd166;
+      margin: 10px 0 25px 0;
+      font-family: "Great Vibes", cursive;
+      animation: fadeInName 2s ease-in-out;
+    }
+
+    .score {
+      font-size: 1.6em;
+      color: #67ddb5;
+      margin-bottom: 25px;
+    }
+
+    .content {
+      max-width: 550px;
+      margin: 0 auto;
+      opacity: 0.9;
+      line-height: 1.6em;
+    }
+
+    /* =============================
+       BOUTONS
+    ============================== */
+    .btn {
+      background: linear-gradient(90deg, #a88bff, #67ddb5);
+      border: none;
+      border-radius: 12px;
+      padding: 14px 28px;
+      color: #0d0d18;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 1em;
+      margin: 8px;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #a88bff;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.9em;
+      color: #a88bff;
+      opacity: 0.8;
+      text-align: center;
+      width: 100%;
+    }
+
+    /* =============================
+       ANIMATIONS
+    ============================== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInName {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes drawSignature {
+      0% { stroke-dashoffset: 400; opacity: 0; }
+      50% { opacity: 1; }
+      100% { stroke-dashoffset: 0; opacity: 1; }
+    }
+
+    @media (max-width: 700px) {
+      .card { width: 85%; padding: 25px; }
+      h1 { font-size: 1.8em; }
+      .name { font-size: 1.6em; }
+    }
+
+    /* =============================
+       SIGNATURE ANIMÉE
+    ============================== */
+    .signature {
+      width: 220px;
+      height: 80px;
+      margin: 20px auto 0 auto;
+    }
+
+    .signature path {
+      stroke: #ffd166;
+      stroke-width: 2;
+      fill: none;
+      stroke-dasharray: 400;
+      stroke-dashoffset: 400;
+      animation: drawSignature 3s ease forwards 1.2s;
+    }
+  </style>
 </head>
 
 <body>
+  <!-- Fond animé -->
   <canvas class="bg"></canvas>
 
-  <nav>
-    <div class="inner">
-      <div class="brand">🧠 QCM & Exercices</div>
-      <div class="row">
-        <a href="index.html" class="btn">🏠 Accueil</a>
-        <a href="cours.html" class="btn">🎓 Cours</a>
-        <a href="fiche.html" class="btn">📄 Fiche</a>
-      </div>
-    </div>
-  </nav>
+  <div class="card">
+    <div class="border-light"></div>
+    <h1>🎓 Certificat de réussite</h1>
+    <h2>Attribué à :</h2>
 
-  <div class="container">
-    <section class="card" style="text-align:center;">
-      <h1>Teste ta compréhension</h1>
-      <p style="color:#a9b6cc;">Réponds aux questions. Si tu te trompes, le site t’explique automatiquement.</p>
+    <div class="name">spilerix</div>
 
-      <div class="row" style="justify-content:center; gap:10px;">
-        <button id="startQuiz" class="btn vert">▶️ Démarrer le test (10 QCM)</button>
-        <button id="startTrain" class="btn accent">♾️ Entraînement rapide</button>
-      </div>
-    </section>
+    <div class="score" id="scoreDisplay">Score : 0%</div>
 
-    <div id="quizArea" class="card" style="display:none; text-align:center;">
-      <h2 id="qTitle">Question</h2>
-      <p id="qText" style="font-size:20px;"></p>
-      <div id="options" class="grid" style="margin-top:10px;"></div>
-      <div id="feedback" class="small" style="margin-top:10px; min-height:20px;"></div>
+    <p class="content">
+      Ce certificat atteste que <b>spilerix</b> a terminé avec succès le test de compréhension des logarithmes,
+      démontrant une excellente maîtrise des fondements mathématiques et une progression constante dans l’apprentissage.
+    </p>
 
-      <button id="nextBtn" class="btn" style="display:none;">Question suivante ➜</button>
+    <div style="margin-top:25px;">
+      <button class="btn" id="downloadPDF">📄 Télécharger en PDF</button>
+      <button class="btn" onclick="window.location.href='exercices.html'">🔁 Refaire le test</button>
+      <button class="btn" onclick="window.location.href='index.html'">🏠 Retour à l'accueil</button>
     </div>
 
-    <div id="scoreArea" class="card" style="display:none; text-align:center;">
-      <h2>Résultat</h2>
-      <p id="scoreText" style="font-size:20px;"></p>
-      <div style="height:10px; background:#1d2a44; border-radius:10px; margin:10px 0;">
-        <div id="scoreBar" style="height:10px; background:#67ddb5; border-radius:10px; width:0%;"></div>
-      </div>
-      <button id="retryBtn" class="btn accent">Rejouer 🔁</button>
-    </div>
+    <!-- Signature animée -->
+    <svg class="signature" viewBox="0 0 500 200">
+      <path d="M10,100 Q80,10 150,100 T300,100 Q350,140 400,100 T480,100" />
+    </svg>
   </div>
 
   <footer>
-    Site créé par <span>spilerixoff</span> – pour comprendre avant de réussir ⚡
+    Site créé par <b>spilerix</b> – pour comprendre avant de réussir ⚡
   </footer>
 
   <script>
-    /* ========= QCM et entraînement ========= */
-    const questions = [
-      { q: "log₂(8) = ?", options: ["2", "3", "4"], correct: 1, exp: "2³ = 8 → log₂(8) = 3" },
-      { q: "log₁₀(100) = ?", options: ["10", "2", "100"], correct: 1, exp: "10² = 100 → log₁₀(100) = 2" },
-      { q: "log₃(27) = ?", options: ["9", "3", "2"], correct: 1, exp: "3³ = 27 → log₃(27) = 3" },
-      { q: "log₄(16) = ?", options: ["2", "3", "4"], correct: 1, exp: "4² = 16 → log₄(16) = 2" },
-      { q: "log₂(32) = ?", options: ["5", "4", "6"], correct: 0, exp: "2⁵ = 32 → log₂(32) = 5" },
-      { q: "log₅(25) = ?", options: ["2", "3", "4"], correct: 0, exp: "5² = 25 → log₅(25) = 2" },
-      { q: "log₁₀(1000) = ?", options: ["2", "3", "4"], correct: 1, exp: "10³ = 1000 → log₁₀(1000) = 3" },
-      { q: "log₁₀(1) = ?", options: ["0", "1", "2"], correct: 0, exp: "10⁰ = 1 → log₁₀(1) = 0" },
-      { q: "log₂(1/8) = ?", options: ["−2", "−3", "2"], correct: 1, exp: "2⁻³ = 1/8 → log₂(1/8) = −3" },
-      { q: "log₃(9×3) = ?", options: ["3", "4", "5"], correct: 1, exp: "log₃(9) + log₃(3) = 2 + 1 = 3 → log₃(27)=3" }
-    ];
+    // =========================
+    // FOND AVEC PARTICULES DORÉES ✨
+    // =========================
+    const canvas = document.querySelector('.bg');
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    const particles = [];
 
-    let current = 0, score = 0, training = false;
-
-    const qTitle = document.getElementById("qTitle");
-    const qText = document.getElementById("qText");
-    const options = document.getElementById("options");
-    const feedback = document.getElementById("feedback");
-    const nextBtn = document.getElementById("nextBtn");
-    const quizArea = document.getElementById("quizArea");
-    const scoreArea = document.getElementById("scoreArea");
-    const scoreText = document.getElementById("scoreText");
-    const scoreBar = document.getElementById("scoreBar");
-
-    document.getElementById("startQuiz").onclick = () => startQuiz(false);
-    document.getElementById("startTrain").onclick = () => startQuiz(true);
-    document.getElementById("retryBtn").onclick = resetQuiz;
-    nextBtn.onclick = nextQuestion;
-
-    function startQuiz(train) {
-      training = train;
-      current = 0;
-      score = 0;
-      scoreArea.style.display = "none";
-      quizArea.style.display = "block";
-      nextBtn.style.display = "none";
-      showQuestion();
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
     }
+    window.addEventListener('resize', resize);
+    resize();
 
-    function showQuestion() {
-      const q = questions[current];
-      qTitle.textContent = "Question " + (current + 1);
-      qText.textContent = q.q;
-      options.innerHTML = "";
-      feedback.textContent = "";
-
-      q.options.forEach((opt, i) => {
-        const btn = document.createElement("button");
-        btn.className = "btn";
-        btn.textContent = opt;
-        btn.onclick = () => checkAnswer(i);
-        options.appendChild(btn);
-      });
-    }
-
-    function checkAnswer(i) {
-      const q = questions[current];
-      if (i === q.correct) {
-        score++;
-        feedback.style.color = "#67ddb5";
-        feedback.textContent = "✔️ Correct ! " + q.exp;
-        voice.speak("Correct !");
-      } else {
-        feedback.style.color = "#ef476f";
-        feedback.textContent = "❌ Mauvaise réponse. " + q.exp;
-        voice.speak("Faux, écoute bien l’explication.");
+    class Particle {
+      constructor() {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
+        this.size = 1 + Math.random() * 2;
+        this.speedY = 0.3 + Math.random() * 0.7;
+        this.alpha = 0.3 + Math.random() * 0.5;
       }
-
-      nextBtn.style.display = "block";
-      $$("button.btn").forEach(b => (b.disabled = true));
-    }
-
-    function nextQuestion() {
-      if (training) {
-        current = (current + 1) % questions.length;
-        showQuestion();
-        nextBtn.style.display = "none";
-      } else {
-        current++;
-        if (current < questions.length) {
-          showQuestion();
-          nextBtn.style.display = "none";
-        } else endQuiz();
+      draw() {
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = "#ffd166";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+      update() {
+        this.y -= this.speedY;
+        if (this.y < 0) {
+          this.y = H + 10;
+          this.x = Math.random() * W;
+        }
       }
     }
 
-    function endQuiz() {
-      quizArea.style.display = "none";
-      scoreArea.style.display = "block";
-      const pct = Math.round((score / questions.length) * 100);
-      scoreText.textContent = `Ton score : ${score}/${questions.length} (${pct}%)`;
-      scoreBar.style.width = pct + "%";
-      voice.speak(`Ton score est de ${pct} pour cent.`);
-    }
+    for (let i = 0; i < 120; i++) particles.push(new Particle());
 
-    function resetQuiz() {
-      scoreArea.style.display = "none";
-      quizArea.style.display = "none";
+    function animate() {
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(animate);
     }
+    animate();
+
+    // =========================
+    // SCORE AUTOMATIQUE
+    // =========================
+    const score = localStorage.getItem("dernierScore") || 0;
+    document.getElementById("scoreDisplay").textContent = "Score : " + score + "%";
+
+    // =========================
+    // TÉLÉCHARGEMENT PDF
+    // =========================
+    document.getElementById("downloadPDF").onclick = () => {
+      const win = window.open('', '_blank');
+      win.document.write(`
+        <html>
+        <head><title>Certificat Spilerix</title></head>
+        <body style="text-align:center;font-family:Poppins;background:#1a1125;color:white;padding:60px;">
+          <h1 style="color:#f5e6ff;">🎓 Certificat de Réussite</h1>
+          <h2 style="color:#ffd166;">Attribué à : <b>spilerix</b></h2>
+          <p style="font-size:1.2em;">Score obtenu : <b>${score}%</b></p>
+          <p style="max-width:500px;margin:auto;margin-top:20px;">
+            Ce certificat atteste que spilerix a démontré sa compréhension des logarithmes avec succès.
+          </p>
+          <svg viewBox='0 0 500 200' width='250'>
+            <path d='M10,100 Q80,10 150,100 T300,100 Q350,140 400,100 T480,100'
+              stroke='#ffd166' stroke-width='2' fill='none'/>
+          </svg>
+          <p style="margin-top:40px;color:#a88bff;">
+            Site créé par <b>spilerix</b> – pour comprendre avant de réussir ⚡
+          </p>
+        </body>
+        </html>
+      `);
+      win.print();
+    };
   </script>
 </body>
 </html>
