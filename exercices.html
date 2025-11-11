@@ -11,22 +11,28 @@
   <!-- QCM (questions, voix, certificat) -->
   <script defer src="script_qcm.js"></script>
 
-  <!-- Script commun (fond animé, calculatrice si présente, musique) -->
+  <!-- Script commun (fond animé + calculatrice + musique) -->
   <script defer src="script.js"></script>
 
   <style>
-    /* Ajustements spécifiques à la page */
-    h1 { margin: 0 0 6px; }
-    #quizBox h2 { margin-top: 0; }
+    /* --- Spécifique à la page --- */
+    h1{margin:0 0 6px}
+    #quizBox h2{margin-top:0}
+    .col2{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+    @media (max-width:1020px){.col2{grid-template-columns:1fr}}
+    .k{display:inline-block;padding:2px 6px;border:1px solid #2d3760;border-radius:6px;background:#0b1423}
+    .check{display:inline-flex;align-items:center;gap:8px;margin-top:6px}
+    .ok{color:#67ddb5}.no{color:#ef476f}
+    .hr{height:1px;background:#1d2a44;margin:14px 0}
+    .badge{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid #2d3760;background:#22284a}
+    details.tips{background:rgba(255,255,255,.05);border:1px solid #1d2a44;border-radius:12px;padding:12px}
+    details.tips>summary{cursor:pointer;list-style:none;font-weight:700;color:#a88bff}
+    details.tips>summary::-webkit-details-marker{display:none}
+    .mini-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    @media (max-width:760px){.mini-grid{grid-template-columns:1fr}}
 
-    /* Bande d'aide repliable (mobile-friendly) */
-    details.tips { background: rgba(255,255,255,.05); border:1px solid #1d2a44; border-radius:12px; padding:12px; }
-    details.tips > summary { cursor:pointer; list-style:none; font-weight:700; color:#a88bff; }
-    details.tips > summary::-webkit-details-marker { display:none; }
-    details.tips p, details.tips ul { margin:.5rem 0 0 0; }
-
-    /* Surlignage pour l’état “non répondu” quand on clique Suivant */
-    #nextQuestion.attn { box-shadow:0 0 12px #67ddb5 !important; transform:scale(1.04); }
+    /* feedback si on clique Suivant sans répondre */
+    #nextQuestion.attn{box-shadow:0 0 12px #67ddb5 !important;transform:scale(1.04)}
   </style>
 </head>
 <body>
@@ -52,71 +58,220 @@
     </div>
   </nav>
 
-  <!-- Contenu -->
-  <div class="container">
-    <section class="card" style="text-align:center;">
-      <h1>Teste ta compréhension</h1>
-      <p class="small">
-        Réponds à chaque question, puis clique <b>Suivant</b>.  
-        Tu peux activer la <b>voix masculine</b> (bouton 🔊) pour écouter les explications orales.
-      </p>
-    </section>
+  <div class="container col2">
+    <!-- ===================== COLONNE GAUCHE : QCM ===================== -->
+    <div>
+      <section class="card" style="text-align:center;">
+        <h1>Teste ta compréhension</h1>
+        <p class="small">
+          Réponds à chaque question puis clique <b>Suivant</b>.  
+          Tu peux activer la <b>voix masculine</b> (bouton 🔊) pour écouter les explications orales.
+        </p>
+        <div class="small" style="opacity:.8">
+          <span class="badge">Produit → +</span>
+          <span class="badge">Quotient → −</span>
+          <span class="badge">Puissance → r·log</span>
+          <span class="badge">logₐ(x) = ln(x)/ln(a)</span>
+          <span class="badge">Domaine : argument &gt; 0</span>
+        </div>
+      </section>
 
-    <div id="quizBox" class="card" role="region" aria-label="QCM Logarithmes">
-      <h2 id="questionTitle">Chargement…</h2>
+      <section id="quizBox" class="card" role="region" aria-label="QCM Logarithmes">
+        <h2 id="questionTitle">Chargement…</h2>
 
-      <!-- Options générées par script_qcm.js -->
-      <div id="options" aria-live="polite"></div>
+        <!-- Options générées par script_qcm.js -->
+        <div id="options" aria-live="polite"></div>
 
-      <!-- Feedback (explication) -->
-      <div id="feedback" class="feedback" aria-live="polite"></div>
+        <!-- Feedback (explication) -->
+        <div id="feedback" class="feedback" aria-live="polite"></div>
 
-      <!-- Commandes -->
-      <div class="row" style="margin-top:14px;justify-content:space-between;">
-        <button id="toggleVoice" class="btn" type="button" aria-pressed="false" title="Activer/Désactiver la voix masculine">
-          🔊 Activer la voix
-        </button>
-        <button id="nextQuestion" class="btn vert" type="button" title="Passer à la question suivante">
-          ➡️ Suivant
-        </button>
-      </div>
+        <!-- Commandes -->
+        <div class="row" style="margin-top:14px;justify-content:space-between;align-items:center;">
+          <button id="toggleVoice" class="btn" type="button" aria-pressed="false" title="Activer/Désactiver la voix masculine">
+            🔊 Activer la voix
+          </button>
+          <div class="small" id="progress" style="opacity:.85"></div>
+          <button id="nextQuestion" class="btn vert" type="button" title="Passer à la question suivante">
+            ➡️ Suivant
+          </button>
+        </div>
+      </section>
 
-      <div id="progress" class="small" style="margin-top:8px;text-align:center;opacity:.85"></div>
+      <!-- Bande d’aide repliable -->
+      <section class="card">
+        <details class="tips" open>
+          <summary>🧩 Astuces rapides (ouvrir/fermer)</summary>
+          <ul class="small" style="margin:6px 0 0 18px;">
+            <li><b>Produit</b> : log(xy) = log x <b>+</b> log y</li>
+            <li><b>Quotient</b> : log(x/y) = log x <b>−</b> log y</li>
+            <li><b>Puissance</b> : log(x^r) = <b>r</b>·log x</li>
+            <li><b>Changement de base</b> : logₐ(x) = ln(x)/ln(a)</li>
+            <li><b>Domaine</b> : argument du log strictement <b>positif</b></li>
+          </ul>
+        </details>
+      </section>
+
+      <!-- Mini-exos corrigés (réponse libre) -->
+      <section class="card">
+        <h3>✍️ Mini-exercices à réponse libre</h3>
+        <p class="small">Tape ta réponse (nombre ou expression) puis clique <b>Vérifier</b>. Écriture acceptée : <code>ln</code>, <code>log</code>, <code>^</code>, <code>sqrt()</code>.</p>
+        <div class="mini-grid">
+          <!-- Exo 1 -->
+          <div class="card" style="padding:12px">
+            <div><b>1)</b> Simplifie : <span class="k">log(200)</span> sachant <span class="k">log(2)≈0,3010</span>.</div>
+            <input id="m1" class="input" placeholder="ex: 2.3010" style="margin-top:8px">
+            <div class="check"><button class="btn vert" onclick="checkM(1)">Vérifier</button><span id="m1f"></span></div>
+          </div>
+
+          <!-- Exo 2 -->
+          <div class="card" style="padding:12px">
+            <div><b>2)</b> Domaine : <span class="k">ln(2x−1)</span> est défini si <span class="k">x &gt; ?</span></div>
+            <input id="m2" class="input" placeholder="ex: 0.5" style="margin-top:8px">
+            <div class="check"><button class="btn vert" onclick="checkM(2)">Vérifier</button><span id="m2f"></span></div>
+          </div>
+
+          <!-- Exo 3 -->
+          <div class="card" style="padding:12px">
+            <div><b>3)</b> Évalue : <span class="k">ln(e^4)</span> = ?</div>
+            <input id="m3" class="input" placeholder="ex: 4" style="margin-top:8px">
+            <div class="check"><button class="btn vert" onclick="checkM(3)">Vérifier</button><span id="m3f"></span></div>
+          </div>
+
+          <!-- Exo 4 -->
+          <div class="card" style="padding:12px">
+            <div><b>4)</b> Simplifie : <span class="k">log(2x) − log(x)</span>.</div>
+            <input id="m4" class="input" placeholder="ex: log(2)" style="margin-top:8px">
+            <div class="check"><button class="btn vert" onclick="checkM(4)">Vérifier</button><span id="m4f"></span></div>
+          </div>
+        </div>
+      </section>
     </div>
 
-    <!-- Bande d’aide repliable -->
-    <section class="card">
-      <details class="tips" open>
-        <summary>🧩 Astuces rapides (ouvrir/fermer)</summary>
-        <ul class="small" style="margin:6px 0 0 18px;">
-          <li><b>Produit</b> : log(xy) = log x <b>+</b> log y</li>
-          <li><b>Quotient</b> : log(x/y) = log x <b>−</b> log y</li>
-          <li><b>Puissance</b> : log(x^r) = <b>r</b> · log x</li>
-          <li><b>Changement de base</b> : logₐ(x) = ln(x)/ln(a)</li>
-          <li><b>Domaine</b> : argument du log strictement <b>positif</b></li>
+    <!-- ===================== COLONNE DROITE : AIDE & CALC ===================== -->
+    <aside>
+      <!-- Méthode pas-à-pas -->
+      <section class="card">
+        <h3>🧭 Méthode pas-à-pas</h3>
+        <ol class="small">
+          <li><b>Domaine</b> : l’argument des logs doit être <b>&gt; 0</b>.</li>
+          <li><b>Regroupe</b> avec les règles : produit ( + ), quotient ( − ), puissance ( r·log ).</li>
+          <li><b>Change de base</b> si besoin : <span class="k">logₐ(x)=ln(x)/ln(a)</span>.</li>
+          <li><b>Interprète</b> : <span class="k">logₐ(b)=x</span> ↔ <span class="k">a^x=b</span>.</li>
+        </ol>
+        <div class="hr"></div>
+        <p class="small"><b>Astuce examen :</b> écris toujours 1ère ligne : <i>“Domaine”</i>. Tu éviteras 80 % des pièges.</p>
+      </section>
+
+      <!-- Erreurs fréquentes -->
+      <section class="card">
+        <h3>⚠️ Erreurs fréquentes</h3>
+        <ul class="small" style="margin-left:18px">
+          <li>❌ <b>log(xy) = log x · log y</b> (faux) — c’est une somme.</li>
+          <li>❌ Oublier le domaine (ex : ln(2x−1) ⇒ x &gt; 1/2).</li>
+          <li>❌ Confondre ln et log (bases différentes).</li>
         </ul>
-      </details>
-    </section>
+      </section>
+
+      <!-- Calculatrice intégrée (mêmes IDs que script.js pour fonctionner) -->
+      <section class="card">
+        <h3>🧮 Calculatrice</h3>
+        <div id="calcPanel" class="calc" style="display:block; position:relative; inset:auto; right:auto; bottom:auto;">
+          <div class="calc-screen">
+            <input id="calcIn" class="input" placeholder="ex: ln(10)/ln(2), 2^3, sqrt(5)" />
+          </div>
+          <div class="calc-grid" style="margin-top:6px">
+            <button class="calc-key" data-ins="ln(">ln</button>
+            <button class="calc-key" data-ins="log(">log</button>
+            <button class="calc-key" data-ins="sqrt(">√</button>
+            <button class="calc-key" data-ins="^">^</button>
+            <button class="calc-key" data-ins="pi">π</button>
+            <button class="calc-key" data-ins="e">e</button>
+
+            <button class="calc-key" data-ins="7">7</button>
+            <button class="calc-key" data-ins="8">8</button>
+            <button class="calc-key" data-ins="9">9</button>
+            <button class="calc-key" data-ins="/">÷</button>
+            <button class="calc-key" data-ins="(">(</button>
+            <button class="calc-key" data-ins=")">)</button>
+
+            <button class="calc-key" data-ins="4">4</button>
+            <button class="calc-key" data-ins="5">5</button>
+            <button class="calc-key" data-ins="6">6</button>
+            <button class="calc-key" data-ins="*">×</button>
+            <button class="calc-key" data-ins="+">+</button>
+            <button class="calc-key" data-ins="-">−</button>
+
+            <button class="calc-key" data-ins="1">1</button>
+            <button class="calc-key" data-ins="2">2</button>
+            <button class="calc-key" data-ins="3">3</button>
+            <button class="calc-key" data-ins="0">0</button>
+            <button id="btnCalcClear" class="calc-key rouge">C</button>
+            <button id="btnCalcEq" class="calc-key eq">=</button>
+          </div>
+          <div id="calcOut" class="calc-screen" style="margin-top:10px; min-height:30px;"></div>
+        </div>
+        <p class="small" style="margin-top:8px">
+          <b>Raccourcis :</b> ln, log, sqrt, ^ &nbsp; • &nbsp; Ex : <span class="k">ln(7)/ln(2)</span>
+        </p>
+      </section>
+
+      <!-- Lien vers la fiche -->
+      <section class="card" style="text-align:center">
+        <a class="btn" href="fiche.html">📄 Voir la fiche “Formules à savoir”</a>
+      </section>
+    </aside>
   </div>
 
-  <!-- Pied de page -->
   <footer>
     Site créé par <b>spilerix</b> – pour comprendre avant de réussir ⚡
   </footer>
 
+  <!-- Mini-script local : correction des mini-exos -->
   <script>
-    // Mini-sécurité visuelle si on clique "Suivant" avant de répondre
+    function clean(s){ return String(s||'').trim().toLowerCase().replace(',', '.'); }
+    function almost(a,b,eps=1e-4){ return Math.abs(a-b) <= eps; }
+
+    function checkM(n){
+      const val = clean(document.getElementById('m'+n).value);
+      const out = document.getElementById('m'+n+'f');
+      let ok=false, msg='';
+
+      if(n===1){ // log(200) ≈ 2.3010
+        const num = parseFloat(val);
+        ok = almost(num, 2.3010, 5e-3);
+        msg = ok ? 'Bien ! log(200)=log(2)+log(100)=0,3010+2=2,3010.' :
+                   'Indice : log(200)=log(2)+log(100).';
+      }
+      if(n===2){ // x > 1/2
+        const num = parseFloat(val);
+        ok = almost(num, 0.5, 1e-6) || val==='1/2' || val==='0.5';
+        msg = ok ? 'Parfait : 2x−1>0 ⇒ x>1/2.' :
+                   'Pense : 2x−1>0 ⇒ 2x>1 ⇒ x>1/2.';
+      }
+      if(n===3){ // ln(e^4) = 4
+        const num = parseFloat(val);
+        ok = almost(num, 4, 1e-6) || val==='4';
+        msg = ok ? 'Exact : ln(e^k)=k.' :
+                   'Rappel : ln(e^k)=k (inverse de exp).';
+      }
+      if(n===4){ // log(2x)-log(x)=log(2)
+        ok = (val.replace(/\s+/g,'')==='log(2)') || (val==='log2') || (val==='log(2)');
+        msg = ok ? 'Oui : log(2x)-log(x)=log(2x/x)=log(2).' :
+                   'Utilise quotient : log(2x)−log(x)=log(2x/x).';
+      }
+
+      out.innerHTML = ok ? '<b class="ok">✅ Correct</b><span class="small"> — '+msg+'</span>'
+                         : '<b class="no">❌ À revoir</b><span class="small"> — '+msg+'</span>';
+    }
+
+    // Effet visuel si on clique Suivant sans répondre (au cas où script_qcm ne l’a pas encore fait)
     const btnNext = document.getElementById('nextQuestion');
     const optionsBox = document.getElementById('options');
-    if (btnNext && optionsBox) {
-      btnNext.addEventListener('click', () => {
-        // script_qcm.js gère le vrai contrôle; ici on ne fait qu’un petit effet
-        if (!optionsBox.querySelector('.correct') && !optionsBox.querySelector('.wrong')) {
-          btnNext.classList.add('attn');
-          setTimeout(()=>btnNext.classList.remove('attn'), 220);
-        }
-      });
-    }
+    btnNext?.addEventListener('click', ()=>{
+      if (!optionsBox.querySelector('.correct') && !optionsBox.querySelector('.wrong')){
+        btnNext.classList.add('attn'); setTimeout(()=>btnNext.classList.remove('attn'),220);
+      }
+    });
   </script>
 </body>
 </html>
