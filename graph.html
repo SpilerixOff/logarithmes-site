@@ -1,31 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graphique – Exponentielle et Logarithme</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
 
-<!doctype html><html lang='fr'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1'/>
-<title>Graphique — a^x vs log_a(x)</title><link rel='stylesheet' href='styles.css' />
-<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css'>
-<script defer src='https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js'></script>
-<script defer src='https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js'></script>
-<style>.graph-wrap{position:relative;background:#0b1423;border:1px solid #22324a;border-radius:16px;overflow:hidden}
-canvas#graph{display:block;width:100%;height:500px}.legend{position:absolute;right:8px;top:8px;background:#0b1423cc;border:1px solid #22324a;border-radius:10px;padding:6px 8px;font-size:13px}
-.legend div{display:flex;align-items:center;gap:6px}.dot{width:10px;height:10px;border-radius:50%}.xp{background:#ffd166}.lp{background:#8a7dff}.diag{background:linear-gradient(90deg,#bbb,#777);-webkit-mask:linear-gradient(45deg,#000 50%,#0000 50%)}</style>
-</head><body><nav class='nav'><div class='nav-inner'><div class='brand'>📈 Graphique</div><div class='row'><a class='btn' href='index.html'>⬅️ Retour</a></div></div></nav>
-<div class='container'><section class='card'><h1>Comparer \(a^x\) et \(\log_a(x)\)</h1>
-<div class='row'><label>Base \(a\) :</label><input id='aRange' class='input' type='range' min='0.2' max='5' step='0.01' value='2'>
-<input id='aNum' class='input' type='number' step='0.01' value='2' style='width:100px'><label class='badge'><input type='checkbox' id='showMirror' checked> Miroir \(y=x\)</label><label class='badge'><input type='checkbox' id='shadeDomain' checked> Hachurer \(x\le0\)</label></div>
-<div class='graph-wrap' style='margin-top:8px'><canvas id='graph'></canvas><div class='legend'><div><span class='dot xp'></span> \(a^x\)</div><div><span class='dot lp'></span> \(\log_a(x)\)</div><div><span class='dot diag'></span> \(y=x\)</div></div></div></section></div>
-<script>
-const cvs=document.getElementById('graph'); const ctx=cvs.getContext('2d'); let W=0,H=0, PAD=42, a=2;
-const range=document.getElementById('aRange'); const num=document.getElementById('aNum'); const showMirror=document.getElementById('showMirror'); const shadeDomain=document.getElementById('shadeDomain');
-function resize(){ const dpr=window.devicePixelRatio||1; const w=cvs.clientWidth||900; const h=500; cvs.width=w*dpr; cvs.height=h*dpr; cvs.style.width=w+'px'; cvs.style.height=h+'px'; ctx.setTransform(dpr,0,0,dpr,0,0); W=w; H=h; draw(); }
-addEventListener('resize', resize);
-function X(x){ const xmin=-4,xmax=4; return PAD+(x-xmin)*(W-2*PAD)/(xmax-xmin); } function Y(y){ const ymin=-4,ymax=4; return H-PAD-(y-ymin)*(H-2*PAD)/(ymax-ymin); }
-function axes(){ ctx.strokeStyle='#2a3b57'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(PAD,Y(0)); ctx.lineTo(W-PAD,Y(0)); ctx.moveTo(X(0),PAD); ctx.lineTo(X(0),H-PAD); ctx.stroke();
-for(let i=-4;i<=4;i++){ const xx=X(i), yy=Y(i); ctx.beginPath(); ctx.moveTo(xx, Y(0)-4); ctx.lineTo(xx, Y(0)+4); ctx.stroke(); ctx.beginPath(); ctx.moveTo(X(0)-4, yy); ctx.lineTo(X(0)+4, yy); ctx.stroke(); ctx.fillStyle='#8aa0c2'; ctx.font='12px Inter'; if(i!==0){ ctx.fillText(i, xx-4, Y(0)+14); ctx.fillText(i, X(0)-18, yy+3);} } }
-function plot(){ axes(); if(shadeDomain.checked){ ctx.fillStyle='rgba(200,120,255,.09)'; ctx.fillRect(PAD, PAD, X(0)-PAD, H-2*PAD); ctx.strokeStyle='#544d8f'; ctx.setLineDash([6,6]); ctx.beginPath(); ctx.moveTo(X(0),PAD); ctx.lineTo(X(0),H-PAD); ctx.stroke(); ctx.setLineDash([]); }
-if(showMirror.checked){ ctx.strokeStyle='#9aa6b3'; ctx.setLineDash([4,6]); ctx.beginPath(); ctx.moveTo(X(-4), Y(-4)); ctx.lineTo(X(4), Y(4)); ctx.stroke(); ctx.setLineDash([]); }
-ctx.strokeStyle='#ffd166'; ctx.lineWidth=2; ctx.beginPath(); let first=true; for(let x=-4;x<=4;x+=0.01){ const y=Math.pow(a,x); if(y<-4||y>4) continue; const sx=X(x), sy=Y(y); if(first){ctx.moveTo(sx,sy); first=false;} else ctx.lineTo(sx,sy); } ctx.stroke();
-ctx.strokeStyle='#8a7dff'; ctx.beginPath(); first=true; for(let x=0.01;x<=4;x+=0.01){ const y=Math.log(x)/Math.log(a); if(y<-4||y>4) continue; const sx=X(x), sy=Y(y); if(first){ctx.moveTo(sx,sy); first=false;} else ctx.lineTo(sx,sy); } ctx.stroke();
-ctx.fillStyle='#ffd166'; ctx.beginPath(); ctx.arc(X(0),Y(1),4,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#8a7dff'; ctx.beginPath(); ctx.arc(X(1),Y(0),4,0,Math.PI*2); ctx.fill(); }
-function draw(){ ctx.clearRect(0,0,W,H); plot(); } range.addEventListener('input', e=>{ let v=parseFloat(range.value); if(Math.abs(v-1)<0.05){v=1.05; range.value=v;} a=v; num.value=v.toFixed(2); draw(); });
-num.addEventListener('input', e=>{ let v=parseFloat(num.value)||2; if(v<=0) v=0.2; if(Math.abs(v-1)<0.05) v=1.05; v=Math.min(5,Math.max(0.2,v)); a=v; range.value=v; draw(); });
-showMirror.addEventListener('change', draw); shadeDomain.addEventListener('change', draw); resize();
-</script></body></html>
+<body>
+  <canvas class="bg"></canvas>
+
+  <nav>
+    <div class="inner">
+      <div class="brand">📈 Graphique interactif</div>
+      <div class="row">
+        <a href="index.html" class="btn">🏠 Accueil</a>
+        <a href="cours.html" class="btn">🎓 Cours</a>
+        <a href="exercices.html" class="btn">🧠 QCM</a>
+        <a href="fiche.html" class="btn">📄 Fiche</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <section class="card" style="text-align:center;">
+      <h1>Exponentielle et Logarithme</h1>
+      <p style="color:#a9b6cc;">
+        Observe comment la courbe du logarithme est l’image miroir de la courbe exponentielle.  
+        C’est ce qu’on appelle des fonctions <b>inverses</b>.
+      </p>
+
+      <label for="baseInput"><b>Changer la base :</b></label>
+      <input id="baseInput" class="input" type="number" min="1.1" step="0.1" value="2" style="width:120px; text-align:center;">
+      <button id="updateBase" class="btn vert">🔁 Mettre à jour</button>
+    </section>
+
+    <div class="card" style="text-align:center;">
+      <canvas id="logGraph" height="420"></canvas>
+    </div>
+
+    <div class="card">
+      <h2>🧠 Interprétation simple</h2>
+      <ul>
+        <li>La fonction <b>y = a<sup>x</sup></b> monte très vite.</li>
+        <li>La fonction <b>y = logₐ(x)</b> monte lentement au début, puis de plus en plus vite.</li>
+        <li>Elles sont symétriques par rapport à la droite <b>y = x</b>.</li>
+        <li>Plus la base <b>a</b> est grande, plus les deux courbes changent de forme.</li>
+      </ul>
+      <div class="small" style="color:#a9b6cc;">
+        💡 Le logarithme sert à “comprimer” les grandes valeurs de l’exponentielle.
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Site créé par <span>spilerixoff</span> – pour comprendre avant de réussir ⚡
+  </footer>
+
+  <script>
+    const ctxG = document.getElementById('logGraph');
+    const baseInput = document.getElementById('baseInput');
+    const updateBtn = document.getElementById('updateBase');
+
+    let graph;
+
+    function genData(base) {
+      const expData = [], logData = [];
+      for (let x = -3; x <= 3; x += 0.1) expData.push({x, y: Math.pow(base, x)});
+      for (let x = 0.1; x <= 10; x += 0.1) logData.push({x, y: Math.log(x) / Math.log(base)});
+      return {expData, logData};
+    }
+
+    function drawGraph(base = 2) {
+      const {expData, logData} = genData(base);
+      if (graph) graph.destroy();
+      graph = new Chart(ctxG, {
+        type: 'scatter',
+        data: {
+          datasets: [
+            {
+              label: `y = ${base}^x (exponentielle)`,
+              data: expData,
+              borderColor: '#67ddb5',
+              backgroundColor: '#67ddb580',
+              showLine: true,
+              tension: 0.2,
+            },
+            {
+              label: `y = log_${base}(x) (logarithme)`,
+              data: logData,
+              borderColor: '#8a7dff',
+              backgroundColor: '#8a7dff80',
+              showLine: true,
+              tension: 0.2,
+            },
+            {
+              label: "y = x",
+              data: Array.from({length:50}, (_,i)=>({x:i/5, y:i/5})),
+              borderColor: '#ffd166',
+              borderDash: [5,5],
+              showLine: true,
+              pointRadius: 0
+            }
+          ]
+        },
+        options: {
+          scales: {
+            x: {
+              title: { display: true, text: "x", color: "#a9b6cc" },
+              grid: { color: "#1d2a44" },
+              ticks: { color: "#a9b6cc" }
+            },
+            y: {
+              title: { display: true, text: "y", color: "#a9b6cc" },
+              grid: { color: "#1d2a44" },
+              ticks: { color: "#a9b6cc" }
+            }
+          },
+          plugins: {
+            legend: {
+              labels: { color: "#a9b6cc" }
+            }
+          }
+        }
+      });
+    }
+
+    updateBtn.addEventListener('click', () => {
+      const b = parseFloat(baseInput.value);
+      if (b > 1) drawGraph(b);
+    });
+
+    drawGraph(2);
+  </script>
+</body>
+</html>

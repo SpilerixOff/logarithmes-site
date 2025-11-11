@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fiche de Révision – Logarithmes</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="script.js"></script>
+</head>
+
+<body>
+  <canvas class="bg"></canvas>
+
+  <nav>
+    <div class="inner">
+      <div class="brand">🧾 Fiche de Révision</div>
+      <div class="row">
+        <a href="index.html" class="btn">🏠 Accueil</a>
+        <a href="cours.html" class="btn">🎓 Cours</a>
+        <a href="exercices.html" class="btn">🧠 QCM</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <section class="card" style="text-align:center;">
+      <h1>Fiche de révision des logarithmes</h1>
+      <p style="color:#a9b6cc;">Tout ce qu’il faut retenir pour réussir ton contrôle 🧠</p>
+      <button class="btn vert" onclick="window.print()">🖨️ Imprimer ou Télécharger en PDF</button>
+    </section>
+
+    <!-- Bloc 1 : définitions -->
+    <div class="card">
+      <h2>📘 Définition</h2>
+      <p>Le logarithme est l’opération <b>inverse</b> de la puissance :</p>
+      <p><b>a<sup>x</sup> = b</b> ⟺ <b>logₐ(b) = x</b></p>
+      <div class="small">💬 Le logarithme répond à la question : combien de fois faut-il multiplier la base <b>a</b> pour obtenir <b>b</b> ?</div>
+    </div>
+
+    <!-- Bloc 2 : formules -->
+    <div class="card">
+      <h2>📐 Formules à connaître par cœur</h2>
+      <div class="grid">
+        <div class="card" style="background:#0b1423;">
+          <p><b>Produit :</b> logₐ(xy) = logₐx + logₐy</p>
+          <p class="small">→ Multiplie → Additionne</p>
+        </div>
+        <div class="card" style="background:#0b1423;">
+          <p><b>Quotient :</b> logₐ(x/y) = logₐx − logₐy</p>
+          <p class="small">→ Divise → Soustrais</p>
+        </div>
+        <div class="card" style="background:#0b1423;">
+          <p><b>Puissance :</b> logₐ(xʳ) = r · logₐx</p>
+          <p class="small">→ L’exposant descend</p>
+        </div>
+        <div class="card" style="background:#0b1423;">
+          <p><b>Changement de base :</b> logₐx = ln(x)/ln(a)</p>
+          <p class="small">→ Pour calculer avec ta calculatrice</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bloc 3 : propriétés utiles -->
+    <div class="card">
+      <h2>🧮 Propriétés essentielles</h2>
+      <ul>
+        <li>logₐ(a) = 1</li>
+        <li>logₐ(1) = 0</li>
+        <li>a^(logₐx) = x</li>
+        <li>Le log n’existe que pour x > 0</li>
+      </ul>
+    </div>
+
+    <!-- Bloc 4 : erreurs à éviter -->
+    <div class="card">
+      <h2>⚠️ Erreurs fréquentes à éviter</h2>
+      <ul>
+        <li>❌ log(x + y) ≠ logx + logy</li>
+        <li>❌ log(0) ou log(-1) → impossible</li>
+        <li>❌ oublier le domaine (x > 0)</li>
+        <li>❌ confondre log et ln → ln = log base e (≈2,718)</li>
+      </ul>
+    </div>
+
+    <!-- Bloc 5 : méthode de résolution -->
+    <div class="card">
+      <h2>🧭 Méthode pour résoudre une équation logarithmique</h2>
+      <ol>
+        <li>✅ <b>Domaine :</b> assure-toi que tout ce qui est dans le log est > 0.</li>
+        <li>📦 <b>Regroupe :</b> simplifie avec les règles (produit, quotient, puissance).</li>
+        <li>⚡ <b>Exponentialise :</b> transforme logₐ(x) = b en a<sup>b</sup> = x.</li>
+        <li>🧠 <b>Vérifie :</b> le résultat doit respecter le domaine.</li>
+      </ol>
+    </div>
+
+    <!-- Bloc 6 : mini-exemples -->
+    <div class="card">
+      <h2>📚 Exemples rapides</h2>
+      <ul>
+        <li>log₂(32) = 5 → car 2⁵ = 32</li>
+        <li>log₁₀(100) = 2 → car 10² = 100</li>
+        <li>log₃(27×9) = log₃(27)+log₃(9) = 3+2 = 5</li>
+        <li>log₂(1/8) = -3 → car 2⁻³ = 1/8</li>
+      </ul>
+    </div>
+
+    <!-- Bloc 7 : petit mémo final -->
+    <div class="card" style="text-align:center;">
+      <h3>🧠 À retenir absolument</h3>
+      <p>Le logarithme te dit <b>combien de fois</b> il faut multiplier la base pour obtenir un nombre.</p>
+      <p>Si tu maîtrises les <b>3 règles (× ÷ ^)</b> et la formule <b>logₐx = ln(x)/ln(a)</b>, tu réussis ton contrôle. 💪</p>
+    </div>
+  </div>
+
+  <footer>
+    Site créé par <span>spilerixoff</span> – pour comprendre avant de réussir ⚡
+  </footer>
+</body>
+</html>

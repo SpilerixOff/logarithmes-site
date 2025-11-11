@@ -1,45 +1,254 @@
+/* ========= styles.css ========= */
 
-:root{
-  --bg:#060912; --card:#0e1521; --ink:#eaf2ff; --muted:#a6b6c9; --line:#182334;
-  --b1:#ffd166; --b2:#06d6a0; --vio:#8a7dff; --danger:#ef476f;
+/* 🌙 Thème global */
+:root {
+  --fond: #060913;
+  --carte: #101829;
+  --texte: #eaf2ff;
+  --accent: #8a7dff;
+  --accent2: #67ddb5;
+  --erreur: #ef476f;
+  --jaune: #ffd166;
+  --gris: #a9b6cc;
+  --bord: #1d2a44;
+  --ombre: 0 10px 25px -10px #000a;
+  --arrondi: 18px;
+  --vitesse: 0.25s;
 }
-*{box-sizing:border-box}
-html{background:var(--bg)}
-body{margin:0;color:var(--ink);font-family:Inter,system-ui,Segoe UI,Roboto}
-a{color:var(--b1);text-decoration:none} a:hover{text-decoration:underline}
-.container{max-width:1120px;margin:0 auto;padding:16px;position:relative;z-index:1}
-.nav{position:sticky;top:0;z-index:6;background:#0b1423cc;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.nav-inner{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 16px}
-.brand{font-weight:900}
-.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.btn{background:#18263e;border:1px solid #22324a;color:#eaf2ff;padding:10px 12px;border-radius:12px;cursor:pointer;text-decoration:none}
-.btn.alt{background:linear-gradient(180deg,#8a7dff,#6b5bff);border:none}
-.btn.safe{background:linear-gradient(180deg,#67ddb5,#2fc28d);color:#06281e;border:none;font-weight:800}
-.btn.warn{background:linear-gradient(180deg,#ffd166,#ffb83b);color:#221a00;border:none;font-weight:900}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:12px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
-.small{color:var(--muted);font-size:14px}
-.input{width:100%;padding:10px 12px;border-radius:12px;border:1px solid #22324a;background:#0b1423;color:#eaf2ff}
-.badge{display:inline-block;background:#101a2a;border:1px solid #1f2f47;color:#b7c7e2;border-radius:999px;padding:4px 10px;font-size:12px;margin-right:6px}
-canvas.bg{position:fixed;inset:0;z-index:0;display:block}
-.tutor{position:fixed;left:50%;transform:translateX(-50%);bottom:84px;z-index:7;width:min(780px,94%);background:#0e1521;border:1px solid #22324a;border-radius:16px;padding:12px;box-shadow:0 18px 48px -18px #000c;display:none}
-.t-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.t-close{background:#1a2336;border:1px solid #2a3b5c;color:#bcd; width:36px; height:36px;border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer}
-.step{padding:8px;border-radius:10px;margin:6px 0;border:1px dashed #2a3d5b;animation:fade .35s ease}
-.pulse{animation:pulse 1s ease infinite}
-@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-@keyframes pulse{0%{box-shadow:0 0 0 0 #8a7dff66}70%{box-shadow:0 0 0 14px #8a7dff00}100%{box-shadow:0 0 0 0 #8a7dff00}}
-.calc-toggle{position:fixed;right:16px;bottom:90px;z-index:7}
-.calc-toggle .btn{border-radius:999px;padding:14px 16px;background:linear-gradient(180deg,#ffd166,#ffb83b);color:#1b1400;font-weight:900;border:none;box-shadow:0 12px 28px -12px #ffd166aa}
-.calc-panel{position:fixed;right:16px;bottom:160px;width:340px;max-width:94vw;background:#0e1521;border:1px solid #22324a;border-radius:16px;padding:12px;z-index:8;box-shadow:0 18px 48px -18px #000c;display:none}
-.calc-head{display:flex;justify-content:space-between;align-items:center}
-.calc-close{background:#1a2336;border:1px solid #2a3b5c;color:#bcd; width:36px; height:36px;border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer}
-.calc-screen{background:#0b1423;border:1px solid #22324a;border-radius:12px;padding:10px;margin-top:8px}
-.calc-row{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px}
-.calc-key{padding:10px;border-radius:10px;border:1px solid #22324a;background:#18263e;color:#eaf2ff;cursor:pointer;text-align:center}
-.calc-key.op{background:#203355}
-.calc-key.eq{background:linear-gradient(180deg,#67ddb5,#2fc28d);color:#06281e;font-weight:900}
-.calc-hist{max-height:120px;overflow:auto;border-top:1px solid #22324a;margin-top:8px;padding-top:6px;font-size:13px;color:#b7c7e2}
-.calc-hist div{padding:2px 0;border-bottom:1px dashed #22324a}
-.copy{background:#142034;border:1px solid #22324a;border-radius:8px;padding:6px 8px;font-size:12px;color:#b7c7e2;cursor:pointer;}
-@media (max-width:520px){ .calc-panel{left:10px;right:10px;bottom:10px;width:auto} }
+
+* {
+  box-sizing: border-box;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--fond);
+  color: var(--texte);
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  color: var(--jaune);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ========= Barre de navigation ========= */
+nav {
+  position: sticky;
+  top: 0;
+  background: #0b1423cc;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--bord);
+  z-index: 10;
+}
+
+nav .inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+}
+
+.brand {
+  font-weight: 900;
+  font-size: 20px;
+}
+
+/* ========= Boutons ========= */
+.btn {
+  background: #18263e;
+  color: var(--texte);
+  border: 1px solid var(--bord);
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-weight: 600;
+}
+
+.btn:hover {
+  background: #203355;
+}
+
+.btn.accent {
+  background: linear-gradient(180deg, var(--accent), #6b5bff);
+  border: none;
+}
+
+.btn.vert {
+  background: linear-gradient(180deg, var(--accent2), #2fc28d);
+  color: #06281e;
+  border: none;
+  font-weight: 800;
+}
+
+.btn.rouge {
+  background: linear-gradient(180deg, #ff8698, #ef476f);
+  color: #340005;
+  border: none;
+  font-weight: 800;
+}
+
+/* ========= Cartes et conteneurs ========= */
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.card {
+  background: var(--carte);
+  border: 1px solid var(--bord);
+  border-radius: var(--arrondi);
+  padding: 16px;
+  box-shadow: var(--ombre);
+  margin-bottom: 14px;
+}
+
+/* ========= Grilles ========= */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+/* ========= Inputs ========= */
+.input {
+  width: 100%;
+  background: #0b1423;
+  color: var(--texte);
+  border: 1px solid var(--bord);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* ========= Animation fond ========= */
+canvas.bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: block;
+}
+
+/* ========= Tutoriel interactif ========= */
+.tutoriel {
+  position: fixed;
+  left: 50%;
+  bottom: 70px;
+  transform: translateX(-50%);
+  background: var(--carte);
+  border: 1px solid var(--bord);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: var(--ombre);
+  width: min(800px, 95%);
+  display: none;
+  z-index: 5;
+}
+
+.t-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.t-header h3 {
+  margin: 0;
+  color: var(--jaune);
+}
+
+.close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--bord);
+  background: #1a2336;
+  color: var(--texte);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* ========= Calculatrice ========= */
+.calc-btn {
+  position: fixed;
+  right: 16px;
+  bottom: 90px;
+  z-index: 6;
+}
+
+.calc {
+  position: fixed;
+  right: 16px;
+  bottom: 150px;
+  background: var(--carte);
+  border: 1px solid var(--bord);
+  border-radius: 14px;
+  box-shadow: var(--ombre);
+  padding: 14px;
+  width: 330px;
+  max-width: 90vw;
+  display: none;
+  z-index: 7;
+}
+
+.calc-screen {
+  background: #0b1423;
+  border: 1px solid var(--bord);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 8px;
+  color: var(--texte);
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+.calc-key {
+  padding: 10px;
+  background: #18263e;
+  color: var(--texte);
+  border: 1px solid var(--bord);
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.calc-key.eq {
+  background: var(--accent2);
+  color: #06281e;
+  font-weight: 800;
+}
+
+/* ========= Pied de page ========= */
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  color: var(--gris);
+}
+
+footer span {
+  color: var(--accent);
+  font-weight: 600;
+}
