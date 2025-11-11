@@ -1,138 +1,428 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Graphique – Exponentielle et Logarithme</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Graphiques – Logarithmes</title>
 
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
+
+  <style>
+    .panel{display:grid;grid-template-columns:1fr;gap:12px}
+    .rowx{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .ctrl{background:rgba(255,255,255,.05);border:1px solid #1d2a44;border-radius:14px;padding:12px}
+    label{font-size:.92rem;color:#a9b6cc;margin-right:6px}
+    select,input[type="number"]{background:#0b1423;border:1px solid #1d2a44;color:#eaf2ff;border-radius:10px;padding:8px 10px}
+    #stage{position:relative;aspect-ratio:16/10;background:#0a0f1f;border:1px solid #1d2a44;border-radius:16px;overflow:hidden}
+    #plot{position:absolute;inset:0}
+    #hud{position:absolute;left:10px;bottom:10px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.15);padding:6px 10px;border-radius:10px;font-size:.9rem}
+    #cursor{position:absolute;pointer-events:none; background:rgba(0,0,0,.6); border:1px solid rgba(255,255,255,.2); padding:4px 8px; border-radius:8px; font-size:.9rem; transform:translate(8px,-18px)}
+    .chip{display:inline-block;padding:4px 8px;border:1px solid #2d3760;border-radius:999px;background:#0b1423;color:#eaf2ff;margin:2px}
+    .split{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+    @media (max-width:900px){.split{grid-template-columns:1fr}}
+    .mini{font-size:.85rem;color:#a9b6cc}
+  </style>
+</head>
 <body>
   <canvas class="bg"></canvas>
 
+  <!-- Musique (facultatif) -->
+  <div id="musicControl">
+    <button id="toggleMusic">🔈 Musique</button>
+    <audio id="bgMusic" loop>
+      <source src="piano.mp3" type="audio/mpeg" />
+    </audio>
+  </div>
+
   <nav>
-    <div class="inner">
-      <div class="brand">📈 Graphique interactif</div>
-      <div class="row">
-        <a href="index.html" class="btn">🏠 Accueil</a>
-        <a href="cours.html" class="btn">🎓 Cours</a>
-        <a href="exercices.html" class="btn">🧠 QCM</a>
-        <a href="fiche.html" class="btn">📄 Fiche</a>
-      </div>
+    <div class="brand">📈 Graphiques Logarithmes</div>
+    <div class="row">
+      <a href="index.html" class="btn">🏠 Accueil</a>
+      <a href="cours.html" class="btn">🎓 Cours</a>
+      <a href="fiche.html" class="btn">📄 Fiche</a>
+      <a href="exercices.html" class="btn">🧠 QCM</a>
     </div>
   </nav>
 
-  <div class="container">
-    <section class="card" style="text-align:center;">
-      <h1>Exponentielle et Logarithme</h1>
-      <p style="color:#a9b6cc;">
-        Observe comment la courbe du logarithme est l’image miroir de la courbe exponentielle.  
-        C’est ce qu’on appelle des fonctions <b>inverses</b>.
-      </p>
+  <div class="container split">
+    <div class="panel">
+      <div class="ctrl">
+        <div class="rowx">
+          <label for="fn">Fonction :</label>
+          <select id="fn">
+            <option value="ln">ln(x)</option>
+            <option value="log10">log₁₀(x)</option>
+            <option value="loga">logₐ(x)</option>
+          </select>
 
-      <label for="baseInput"><b>Changer la base :</b></label>
-      <input id="baseInput" class="input" type="number" min="1.1" step="0.1" value="2" style="width:120px; text-align:center;">
-      <button id="updateBase" class="btn vert">🔁 Mettre à jour</button>
-    </section>
+          <label for="base" id="labelBase" style="display:none;">a =</label>
+          <input type="number" id="base" step="0.1" value="2" style="width:90px;display:none;">
 
-    <div class="card" style="text-align:center;">
-      <canvas id="logGraph" height="420"></canvas>
+          <span class="chip mini">Astuce : logₐ(x)=ln(x)/ln(a)</span>
+        </div>
+      </div>
+
+      <div class="ctrl">
+        <div class="rowx" style="gap:14px">
+          <div>
+            <label for="xmin">x min</label>
+            <input type="number" id="xmin" value="0.1" step="0.1" style="width:110px">
+          </div>
+          <div>
+            <label for="xmax">x max</label>
+            <input type="number" id="xmax" value="10" step="0.1" style="width:110px">
+          </div>
+          <div>
+            <label for="ymin">y min</label>
+            <input type="number" id="ymin" value="-3" step="0.5" style="width:110px">
+          </div>
+          <div>
+            <label for="ymax">y max</label>
+            <input type="number" id="ymax" value="3" step="0.5" style="width:110px">
+          </div>
+          <button id="apply" class="btn vert">Mettre à jour</button>
+          <button id="reset" class="btn">Reset</button>
+        </div>
+        <div class="rowx" style="margin-top:8px">
+          <span class="mini">Presets :</span>
+          <button class="btn chip" data-p="small">[0.1 ; 10] × [-3 ; 3]</button>
+          <button class="btn chip" data-p="wide">[0.01 ; 100] × [-6 ; 6]</button>
+          <button class="btn chip" data-p="zoom1">[0.8 ; 1.2] × [-2 ; 2]</button>
+        </div>
+      </div>
+
+      <div id="stage">
+        <canvas id="plot"></canvas>
+        <div id="cursor" style="display:none">x=?, y=?</div>
+        <div id="hud">Zoom : molette / pincement &nbsp;•&nbsp; Pan : glisser</div>
+      </div>
     </div>
 
-    <div class="card">
-      <h2>🧠 Interprétation simple</h2>
-      <ul>
-        <li>La fonction <b>y = a<sup>x</sup></b> monte très vite.</li>
-        <li>La fonction <b>y = logₐ(x)</b> monte lentement au début, puis de plus en plus vite.</li>
-        <li>Elles sont symétriques par rapport à la droite <b>y = x</b>.</li>
-        <li>Plus la base <b>a</b> est grande, plus les deux courbes changent de forme.</li>
-      </ul>
-      <div class="small" style="color:#a9b6cc;">
-        💡 Le logarithme sert à “comprimer” les grandes valeurs de l’exponentielle.
+    <div class="panel">
+      <div class="card">
+        <h3>📌 Rappels utiles</h3>
+        <ul class="small" style="margin-left:18px">
+          <li>Domaine : <b>x &gt; 0</b> (on ne trace pas à x ≤ 0 pour un log réel).</li>
+          <li><b>ln</b> = log base <b>e</b> ≈ 2,718 &nbsp; • &nbsp; <b>log</b> = base 10.</li>
+          <li><b>logₐ(x)</b> = ln(x)/ln(a) (a &gt; 0, a ≠ 1).</li>
+          <li>Quand <b>a &gt; 1</b>, logₐ(x) est croissante ; quand <b>0&lt;a&lt;1</b>, elle est décroissante.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>🔎 Lecture au curseur</h3>
+        <p class="small">Déplace le doigt/la souris : le point violet t’affiche les valeurs (x,y) en bas à droite du repère.</p>
+      </div>
+
+      <div class="card">
+        <h3>🎯 Exemples rapides</h3>
+        <ul class="small" style="margin-left:18px">
+          <li>ln(e⁴)=4 → le point (e⁴, 4) est sur ln(x).</li>
+          <li>log₁₀(100)=2 → le point (100, 2) est sur log₁₀(x).</li>
+          <li>log₂(8)=3 → le point (8,3) est sur log₂(x).</li>
+        </ul>
       </div>
     </div>
   </div>
 
-  <footer>
-    Site créé par <span>spilerixoff</span> – pour comprendre avant de réussir ⚡
-  </footer>
+  <footer>Site créé par <b>spilerix</b> – pour comprendre avant de réussir ⚡</footer>
 
   <script>
-    const ctxG = document.getElementById('logGraph');
-    const baseInput = document.getElementById('baseInput');
-    const updateBtn = document.getElementById('updateBase');
+    // ========= Setup canvas =========
+    const canvas = document.getElementById('plot');
+    const ctx = canvas.getContext('2d');
+    const stage = document.getElementById('stage');
+    const cursor = document.getElementById('cursor');
 
-    let graph;
+    function resizeCanvas(){
+      const r = stage.getBoundingClientRect();
+      canvas.width = r.width * (window.devicePixelRatio||1);
+      canvas.height = r.height * (window.devicePixelRatio||1);
+      canvas.style.width = r.width + 'px';
+      canvas.style.height = r.height + 'px';
+      ctx.setTransform(window.devicePixelRatio||1,0,0,window.devicePixelRatio||1,0,0);
+      draw();
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
-    function genData(base) {
-      const expData = [], logData = [];
-      for (let x = -3; x <= 3; x += 0.1) expData.push({x, y: Math.pow(base, x)});
-      for (let x = 0.1; x <= 10; x += 0.1) logData.push({x, y: Math.log(x) / Math.log(base)});
-      return {expData, logData};
+    // ========= State (world coords) =========
+    let xmin = 0.1, xmax = 10, ymin = -3, ymax = 3;
+
+    // Controls
+    const fnSel = document.getElementById('fn');
+    const baseInput = document.getElementById('base');
+    const labelBase = document.getElementById('labelBase');
+    const xin = document.getElementById('xmin');
+    const xax = document.getElementById('xmax');
+    const yin = document.getElementById('ymin');
+    const yax = document.getElementById('ymax');
+
+    function currentFn(){
+      const t = fnSel.value;
+      if (t === 'ln') return x => Math.log(x);
+      if (t === 'log10') return x => Math.log10 ? Math.log10(x) : Math.log(x)/Math.LN10;
+      if (t === 'loga') {
+        const a = parseFloat(baseInput.value);
+        return x => Math.log(x)/Math.log(a);
+      }
     }
 
-    function drawGraph(base = 2) {
-      const {expData, logData} = genData(base);
-      if (graph) graph.destroy();
-      graph = new Chart(ctxG, {
-        type: 'scatter',
-        data: {
-          datasets: [
-            {
-              label: `y = ${base}^x (exponentielle)`,
-              data: expData,
-              borderColor: '#67ddb5',
-              backgroundColor: '#67ddb580',
-              showLine: true,
-              tension: 0.2,
-            },
-            {
-              label: `y = log_${base}(x) (logarithme)`,
-              data: logData,
-              borderColor: '#8a7dff',
-              backgroundColor: '#8a7dff80',
-              showLine: true,
-              tension: 0.2,
-            },
-            {
-              label: "y = x",
-              data: Array.from({length:50}, (_,i)=>({x:i/5, y:i/5})),
-              borderColor: '#ffd166',
-              borderDash: [5,5],
-              showLine: true,
-              pointRadius: 0
-            }
-          ]
-        },
-        options: {
-          scales: {
-            x: {
-              title: { display: true, text: "x", color: "#a9b6cc" },
-              grid: { color: "#1d2a44" },
-              ticks: { color: "#a9b6cc" }
-            },
-            y: {
-              title: { display: true, text: "y", color: "#a9b6cc" },
-              grid: { color: "#1d2a44" },
-              ticks: { color: "#a9b6cc" }
-            }
-          },
-          plugins: {
-            legend: {
-              labels: { color: "#a9b6cc" }
-            }
-          }
+    function validateBase(){
+      const t = fnSel.value;
+      if (t === 'loga'){
+        labelBase.style.display = '';
+        baseInput.style.display = '';
+        let a = parseFloat(baseInput.value);
+        if (!(a>0) || Math.abs(a-1)<1e-12){
+          baseInput.value = 2;
         }
+      } else {
+        labelBase.style.display = 'none';
+        baseInput.style.display = 'none';
+      }
+    }
+    fnSel.addEventListener('change', ()=>{ validateBase(); draw(); });
+
+    // ========= Coordinates transform =========
+    function x2px(x){ return (x - xmin) * canvas.width / (xmax - xmin); }
+    function y2px(y){ return (ymax - y) * canvas.height / (ymax - ymin); }
+    function px2x(px){ return xmin + px * (xmax - xmin) / canvas.width; }
+    function px2y(py){ return ymax - py * (ymax - ymin) / canvas.height; }
+
+    // ========= Drawing =========
+    function drawGrid(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      // background gradient
+      const g = ctx.createLinearGradient(0,0,0,canvas.height);
+      g.addColorStop(0,'#0d1430');
+      g.addColorStop(1,'#060a18');
+      ctx.fillStyle = g; ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.fillStyle = '#a9b6cc';
+      ctx.font = '12px Inter, Arial';
+
+      // vertical grid (log-space nice ticks: powers of 10 near)
+      const xticks = niceTicks(xmin, xmax, 8);
+      xticks.forEach(x=>{
+        const px = x2px(x);
+        ctx.beginPath(); ctx.moveTo(px,0); ctx.lineTo(px,canvas.height); ctx.stroke();
+        ctx.fillText(formatNum(x), px+3, canvas.height-6);
       });
+
+      // horizontal grid
+      const yticks = niceTicks(ymin, ymax, 8);
+      yticks.forEach(y=>{
+        const py = y2px(y);
+        ctx.beginPath(); ctx.moveTo(0,py); ctx.lineTo(canvas.width,py); ctx.stroke();
+        ctx.fillText(formatNum(y), 6, py-4);
+      });
+
+      // axes x=0 / y=0 if visible
+      if (xmin<0 && xmax>0){
+        const px = x2px(0); ctx.strokeStyle='rgba(168,139,255,0.8)'; ctx.lineWidth=1.5;
+        ctx.beginPath(); ctx.moveTo(px,0); ctx.lineTo(px,canvas.height); ctx.stroke();
+      }
+      if (ymin<0 && ymax>0){
+        const py = y2px(0); ctx.strokeStyle='rgba(168,139,255,0.8)'; ctx.lineWidth=1.5;
+        ctx.beginPath(); ctx.moveTo(0,py); ctx.lineTo(canvas.width,py); ctx.stroke();
+      }
     }
 
-    updateBtn.addEventListener('click', () => {
-      const b = parseFloat(baseInput.value);
-      if (b > 1) drawGraph(b);
+    function drawCurve(){
+      const f = currentFn();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#a88bff';
+      ctx.beginPath();
+
+      // log : seulement x>0
+      const left = Math.max(xmin, 1e-6);
+      const steps = Math.min(Math.max(300, canvas.width/2), 1200);
+      let first=true;
+      for (let i=0;i<=steps;i++){
+        const x = left + (xmax-left)*i/steps;
+        if (x <= 0) continue;
+        let y = f(x);
+        if (!isFinite(y)) continue;
+        const px = x2px(x), py = y2px(y);
+        if (first){ ctx.moveTo(px,py); first=false; }
+        else ctx.lineTo(px,py);
+      }
+      ctx.stroke();
+    }
+
+    function drawPoint(px, py, label){
+      ctx.fillStyle = '#b39bff';
+      ctx.beginPath(); ctx.arc(px,py,4,0,6.283); ctx.fill();
+      if (label){
+        ctx.fillStyle='#eaf2ff';
+        ctx.font='12px Inter, Arial';
+        ctx.fillText(label, px+8, py-8);
+      }
+    }
+
+    function draw(){
+      drawGrid();
+      drawCurve();
+    }
+
+    // ========= Ticks helpers =========
+    function niceTicks(min, max, n){
+      const span = max - min;
+      if (span <= 0 || !isFinite(span)) return [];
+      const step = Math.pow(10, Math.floor(Math.log10(span/n)));
+      const err = (n*step)/span;
+      let niceStep = step;
+      if (err <= 0.5) niceStep = step*0.5;
+      else if (err <= 1.5) niceStep = step;
+      else if (err <= 3) niceStep = step*2;
+      else niceStep = step*5;
+      const tmin = Math.ceil(min / niceStep) * niceStep;
+      const tmax = Math.floor(max / niceStep) * niceStep;
+      const ticks=[];
+      for (let t=tmin; t<=tmax+1e-12; t+=niceStep) ticks.push(+t.toFixed(12));
+      return ticks;
+    }
+    function formatNum(x){
+      const ax=Math.abs(x);
+      if (ax===0) return '0';
+      if (ax>=1e4 || ax<1e-3) return x.toExponential(1);
+      return (Math.round(x*1000)/1000).toString();
+    }
+
+    // ========= Interactions (zoom/pan) =========
+    let dragging=false, lastX=0, lastY=0;
+
+    function clampDomain(){
+      // garde x>0
+      xmin = Math.max(1e-6, xmin);
+      xmax = Math.max(xmin + 1e-6, xmax);
+    }
+
+    canvas.addEventListener('mousedown', e=>{
+      dragging=true; lastX=e.clientX; lastY=e.clientY;
+    });
+    window.addEventListener('mouseup', ()=>dragging=false);
+    canvas.addEventListener('mousemove', e=>{
+      const r = canvas.getBoundingClientRect();
+      const mx = (e.clientX - r.left) * (canvas.width/r.width);
+      const my = (e.clientY - r.top)  * (canvas.height/r.height);
+
+      // Cursor readout
+      const x = px2x(mx), y = px2y(my);
+      cursor.style.display='block';
+      cursor.style.left = (e.clientX - r.left) + 'px';
+      cursor.style.top  = (e.clientY - r.top)  + 'px';
+      cursor.textContent = `x=${formatNum(x)}  y=${formatNum(y)}`;
+
+      if (dragging){
+        const dx = (e.clientX - lastX) * (xmax - xmin) / r.width;
+        const dy = (e.clientY - lastY) * (ymax - ymin) / r.height;
+        xmin -= dx; xmax -= dx;
+        ymin += dy; ymax += dy;
+        clampDomain(); draw();
+        lastX=e.clientX; lastY=e.clientY;
+      }
     });
 
-    drawGraph(2);
+    canvas.addEventListener('wheel', e=>{
+      e.preventDefault();
+      const scale = (e.deltaY<0) ? 0.9 : 1.1;
+      const r = canvas.getBoundingClientRect();
+      const mx = (e.clientX - r.left) / r.width;
+      const my = (e.clientY - r.top)  / r.height;
+
+      const xC = xmin + mx*(xmax-xmin);
+      const yC = ymax - my*(ymax-ymin);
+
+      const newW = (xmax-xmin)*scale;
+      const newH = (ymax-ymin)*scale;
+      xmin = xC - mx*newW; xmax = xmin + newW;
+      ymin = yC - (1-my)*newH; ymax = ymin + newH;
+
+      clampDomain(); draw();
+    }, {passive:false});
+
+    // Mobile: pinch zoom + pan
+    let touchStart = null;
+    canvas.addEventListener('touchstart', e=>{
+      if (e.touches.length===1){
+        touchStart = {x:e.touches[0].clientX, y:e.touches[0].clientY, xmin, xmax, ymin, ymax};
+      } else if (e.touches.length===2){
+        touchStart = {
+          d: dist(e.touches[0], e.touches[1]),
+          cx:(e.touches[0].clientX+e.touches[1].clientX)/2,
+          cy:(e.touches[0].clientY+e.touches[1].clientY)/2,
+          xmin, xmax, ymin, ymax
+        };
+      }
+    }, {passive:true});
+
+    canvas.addEventListener('touchmove', e=>{
+      if (!touchStart) return;
+      if (e.touches.length===1 && touchStart.x!==undefined){
+        const dx = (e.touches[0].clientX - touchStart.x) * (xmax - xmin) / canvas.getBoundingClientRect().width;
+        const dy = (e.touches[0].clientY - touchStart.y) * (ymax - ymin) / canvas.getBoundingClientRect().height;
+        xmin = touchStart.xmin - dx; xmax = touchStart.xmax - dx;
+        ymin = touchStart.ymin + dy; ymax = touchStart.ymax + dy;
+        clampDomain(); draw();
+      } else if (e.touches.length===2 && touchStart.d){
+        const d2 = dist(e.touches[0], e.touches[1]);
+        const s = touchStart.d / d2;
+        const mx = (touchStart.cx - canvas.getBoundingClientRect().left)/canvas.getBoundingClientRect().width;
+        const my = (touchStart.cy - canvas.getBoundingClientRect().top )/canvas.getBoundingClientRect().height;
+
+        const xC = touchStart.xmin + mx*(touchStart.xmax-touchStart.xmin);
+        const yC = touchStart.ymax - my*(touchStart.ymax-touchStart.ymin);
+
+        const newW = (touchStart.xmax-touchStart.xmin)*s;
+        const newH = (touchStart.ymax-touchStart.ymin)*s;
+        xmin = xC - mx*newW; xmax = xmin + newW;
+        ymin = yC - (1-my)*newH; ymax = ymin + newH;
+        clampDomain(); draw();
+      }
+    }, {passive:true});
+
+    canvas.addEventListener('touchend', ()=>{ touchStart=null; }, {passive:true});
+
+    function dist(a,b){ const dx=a.clientX-b.clientX, dy=a.clientY-b.clientY; return Math.hypot(dx,dy); }
+
+    // ========= Controls =========
+    document.getElementById('apply').onclick = ()=>{
+      const nxmin = parseFloat(xin.value), nxmax = parseFloat(xax.value);
+      const nymin = parseFloat(yin.value), nymax = parseFloat(yax.value);
+      if (!(nxmin>0) || !(nxmax>nxmin) || !(nymax>nymin)) return;
+      xmin=nxmin; xmax=nxmax; ymin=nymin; ymax=nymax; draw();
+    };
+    document.getElementById('reset').onclick = ()=>{
+      xmin=0.1; xmax=10; ymin=-3; ymax=3;
+      xin.value=xmin; xax.value=xmax; yin.value=ymin; yax.value=ymax;
+      draw();
+    };
+
+    document.querySelectorAll('[data-p]').forEach(b=>{
+      b.onclick=()=>{
+        const p=b.dataset.p;
+        if (p==='small'){ xmin=0.1;xmax=10;ymin=-3;ymax=3; }
+        if (p==='wide'){ xmin=0.01;xmax=100;ymin=-6;ymax=6; }
+        if (p==='zoom1'){ xmin=0.8;xmax=1.2;ymin=-2;ymax=2; }
+        xin.value=xmin; xax.value=xmax; yin.value=ymin; yax.value=ymax; draw();
+      };
+    });
+
+    baseInput.addEventListener('change', ()=>{ validateBase(); draw(); });
+
+    // Init UI vals
+    xin.value=xmin; xax.value=xmax; yin.value=ymin; yax.value=ymax;
+    validateBase(); draw();
+
+    // Redraw on container resize
+    const ro = new ResizeObserver(resizeCanvas);
+    ro.observe(stage);
   </script>
 </body>
 </html>

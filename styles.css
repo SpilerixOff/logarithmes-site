@@ -1,254 +1,163 @@
-/* ========= styles.css ========= */
-
-/* 🌙 Thème global */
-:root {
-  --fond: #060913;
-  --carte: #101829;
-  --texte: #eaf2ff;
-  --accent: #8a7dff;
-  --accent2: #67ddb5;
-  --erreur: #ef476f;
-  --jaune: #ffd166;
-  --gris: #a9b6cc;
-  --bord: #1d2a44;
-  --ombre: 0 10px 25px -10px #000a;
-  --arrondi: 18px;
-  --vitesse: 0.25s;
+:root{
+  --bg:#050814;
+  --panel:#0b1423;
+  --panel2:#101829;
+  --text:#eaf2ff;
+  --muted:#a9b6cc;
+  --primary:#8a7dff;
+  --accent:#67ddb5;
+  --danger:#ef476f;
+  --outline:#1d2a44;
 }
 
-* {
-  box-sizing: border-box;
-  font-family: "Inter", system-ui, sans-serif;
+/* Reset simple */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%}
+body{
+  background:radial-gradient(ellipse at bottom,#0d0d18,var(--bg));
+  color:var(--text);
+  font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
+  line-height:1.5;
 }
 
-body {
-  margin: 0;
-  background: var(--fond);
-  color: var(--texte);
-  overflow-x: hidden;
+/* Liens & boutons */
+a{color:inherit;text-decoration:none}
+.btn{
+  background:#252547;
+  border:none;
+  border-radius:12px;
+  color:#fff;
+  padding:10px 16px;
+  cursor:pointer;
+  transition:.2s;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.btn:hover{background:#3a3a6d; transform:translateY(-1px)}
+.btn:disabled{opacity:.6; cursor:not-allowed}
+.btn.accent{background:var(--primary)}
+.btn.vert{background:#2b9348}
+.btn.vert:hover{background:#37b358}
+.btn.rouge{background:var(--danger)}
+
+/* Barre de navigation */
+nav{
+  padding:14px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(0,0,0,.35);
+  backdrop-filter:blur(8px);
+  position:relative;
+  z-index:2;
+}
+nav .brand{
+  font-weight:700;
+  color:var(--primary);
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+nav .row{display:flex;gap:10px;flex-wrap:wrap}
+
+/* Mise en page */
+.container{max-width:980px;margin:80px auto;padding:16px}
+.card{
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--outline);
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:0 0 14px rgba(100,100,255,.08);
+}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.small{font-size:.92rem;color:var(--muted)}
+footer{margin:40px 0;text-align:center;color:var(--primary)}
+
+/* Fond animé */
+canvas.bg{
+  position:fixed; inset:0; z-index:-1; pointer-events:none;
 }
 
-h1, h2, h3 {
-  color: var(--jaune);
+/* Inputs */
+.input{
+  width:100%;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid var(--outline);
+  background:var(--panel);
+  color:var(--text);
 }
 
-a {
-  color: var(--accent);
-  text-decoration: none;
+/* Calculatrice flottante */
+.calc-btn{position:fixed;right:18px;bottom:18px;z-index:9}
+.calc{
+  display:none;
+  position:fixed;
+  right:18px; bottom:72px; z-index:9;
+  background:var(--panel2);
+  border:1px solid var(--outline);
+  border-radius:14px;
+  padding:12px;
+  width:min(92vw,360px);
 }
-
-a:hover {
-  text-decoration: underline;
+.calc-screen{margin-bottom:8px}
+.calc-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.calc-key{
+  background:#22284a;
+  border:1px solid #2d3760;
+  border-radius:8px;
+  color:#fff;
+  padding:8px;
+  cursor:pointer;
+  transition:.15s;
 }
+.calc-key:hover{transform:translateY(-1px)}
+.calc-key.eq{grid-column:span 2;background:var(--accent);color:#0b1423;font-weight:700}
 
-/* ========= Barre de navigation ========= */
-nav {
-  position: sticky;
-  top: 0;
-  background: #0b1423cc;
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--bord);
-  z-index: 10;
+/* Contrôle musique */
+#musicControl{position:fixed;top:14px;right:14px;z-index:20}
+#toggleMusic{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.15);
+  color:var(--primary);
+  border-radius:999px;
+  padding:8px 14px;
+  backdrop-filter:blur(6px);
+  transition:.2s;
 }
+#toggleMusic:hover{background:rgba(168,139,255,.2)}
 
-nav .inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 16px;
+/* Badges UI (mode PC/Mobile) */
+.ui-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  padding:6px 10px;
+  border-radius:999px;
+  color:#a9b6cc;font-size:.85rem;
+  cursor:pointer;
 }
+.ui-badge b{color:#eaf2ff}
 
-.brand {
-  font-weight: 900;
-  font-size: 20px;
+/* QCM */
+#options{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.option{
+  background:rgba(255,255,255,.1);
+  padding:14px;border-radius:10px;cursor:pointer;
+  transition:.2s;border:1px solid transparent;text-align:left;font-size:1rem;
 }
+.option:hover{background:rgba(168,139,255,.25);border-color:rgba(168,139,255,.5)}
+.option.correct{background:rgba(50,200,100,.25);border-color:#2b9348}
+.option.wrong{background:rgba(255,60,60,.25);border-color:#ff5555}
+.feedback{margin-top:15px;font-style:italic;color:#dcdcdc;min-height:60px;text-align:center}
 
-/* ========= Boutons ========= */
-.btn {
-  background: #18263e;
-  color: var(--texte);
-  border: 1px solid var(--bord);
-  border-radius: 12px;
-  padding: 10px 14px;
-  cursor: pointer;
-  transition: 0.2s;
-  font-weight: 600;
-}
-
-.btn:hover {
-  background: #203355;
-}
-
-.btn.accent {
-  background: linear-gradient(180deg, var(--accent), #6b5bff);
-  border: none;
-}
-
-.btn.vert {
-  background: linear-gradient(180deg, var(--accent2), #2fc28d);
-  color: #06281e;
-  border: none;
-  font-weight: 800;
-}
-
-.btn.rouge {
-  background: linear-gradient(180deg, #ff8698, #ef476f);
-  color: #340005;
-  border: none;
-  font-weight: 800;
-}
-
-/* ========= Cartes et conteneurs ========= */
-.container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 20px;
-  position: relative;
-  z-index: 2;
-}
-
-.card {
-  background: var(--carte);
-  border: 1px solid var(--bord);
-  border-radius: var(--arrondi);
-  padding: 16px;
-  box-shadow: var(--ombre);
-  margin-bottom: 14px;
-}
-
-/* ========= Grilles ========= */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 12px;
-}
-
-/* ========= Inputs ========= */
-.input {
-  width: 100%;
-  background: #0b1423;
-  color: var(--texte);
-  border: 1px solid var(--bord);
-  border-radius: 12px;
-  padding: 10px 12px;
-}
-
-.input:focus {
-  outline: none;
-  border-color: var(--accent);
-}
-
-/* ========= Animation fond ========= */
-canvas.bg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  display: block;
-}
-
-/* ========= Tutoriel interactif ========= */
-.tutoriel {
-  position: fixed;
-  left: 50%;
-  bottom: 70px;
-  transform: translateX(-50%);
-  background: var(--carte);
-  border: 1px solid var(--bord);
-  border-radius: 16px;
-  padding: 14px;
-  box-shadow: var(--ombre);
-  width: min(800px, 95%);
-  display: none;
-  z-index: 5;
-}
-
-.t-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.t-header h3 {
-  margin: 0;
-  color: var(--jaune);
-}
-
-.close {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid var(--bord);
-  background: #1a2336;
-  color: var(--texte);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-/* ========= Calculatrice ========= */
-.calc-btn {
-  position: fixed;
-  right: 16px;
-  bottom: 90px;
-  z-index: 6;
-}
-
-.calc {
-  position: fixed;
-  right: 16px;
-  bottom: 150px;
-  background: var(--carte);
-  border: 1px solid var(--bord);
-  border-radius: 14px;
-  box-shadow: var(--ombre);
-  padding: 14px;
-  width: 330px;
-  max-width: 90vw;
-  display: none;
-  z-index: 7;
-}
-
-.calc-screen {
-  background: #0b1423;
-  border: 1px solid var(--bord);
-  border-radius: 10px;
-  padding: 10px;
-  margin-bottom: 8px;
-  color: var(--texte);
-}
-
-.calc-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 6px;
-}
-
-.calc-key {
-  padding: 10px;
-  background: #18263e;
-  color: var(--texte);
-  border: 1px solid var(--bord);
-  border-radius: 8px;
-  cursor: pointer;
-  text-align: center;
-}
-
-.calc-key.eq {
-  background: var(--accent2);
-  color: #06281e;
-  font-weight: 800;
-}
-
-/* ========= Pied de page ========= */
-footer {
-  text-align: center;
-  padding: 20px;
-  font-size: 14px;
-  color: var(--gris);
-}
-
-footer span {
-  color: var(--accent);
-  font-weight: 600;
+/* Responsive */
+@media (max-width:760px){
+  nav{flex-direction:column;gap:10px}
+  .grid{grid-template-columns:1fr}
+  .container{margin-top:60px;padding:14px}
+  .btn{font-size:.95rem;padding:9px 12px}
+  .option{font-size:.95rem;padding:12px}
 }

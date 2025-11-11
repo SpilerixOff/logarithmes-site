@@ -5,92 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Logarithmes – Comprendre pour Réussir</title>
 
-  <!-- Styles globaux -->
+  <!-- Styles et script global -->
   <link rel="stylesheet" href="styles.css" />
-  <!-- Script global: fond animé, calculatrice (si présente), bouton musique (si présent) -->
   <script defer src="script.js"></script>
-
-  <style>
-    /* ====== Ajustements mobiles (en + de styles.css) ====== */
-    .row { display: inline-flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-    @media (max-width: 720px) {
-      nav .inner .row a.btn { padding: 10px 12px; }
-      h1 { font-size: 1.4rem; }
-      .card { padding: 14px; }
-    }
-
-    /* ====== Popup Choix PC / Mobile ====== */
-    .ui-modal {
-      position: fixed; inset: 0; display: none;
-      align-items: center; justify-content: center;
-      background: rgba(0,0,0,.55); z-index: 20;
-      padding: 16px;
-    }
-    .ui-modal.show { display: flex; }
-    .ui-card {
-      width: min(560px, 96%); background: #101829; color: #eaf2ff;
-      border: 1px solid #1d2a44; border-radius: 18px; box-shadow: 0 10px 30px #0008;
-      padding: 18px; text-align: center;
-    }
-    .ui-card h3 { margin: 8px 0 2px; color: var(--jaune, #ffd166); }
-    .ui-card p { margin: 4px 0 14px; color: #a9b6cc; }
-    .ui-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .ui-option {
-      background: #0b1423; border: 1px solid #1d2a44; border-radius: 14px; padding: 14px;
-      cursor: pointer; transition: .2s; display: flex; flex-direction: column; gap: 6px;
-    }
-    .ui-option:hover { border-color: #8a7dff; transform: translateY(-2px); }
-    .ui-option span { font-size: .9rem; color: #a9b6cc; }
-    .ui-foot { margin-top: 10px; font-size: .85rem; color: #8aa0c9; }
-
-    /* Badges UI en haut pour rappeler le mode */
-    .ui-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
-      padding: 6px 10px; border-radius: 999px; color: #a9b6cc; font-size: .85rem;
-    }
-    .ui-badge b { color: #eaf2ff; }
-
-    /* Bouton musique (en haut à droite) */
-    #musicControl { position: fixed; top: 14px; right: 14px; z-index: 25; }
-    #toggleMusic {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #a88bff; border-radius: 999px; padding: 8px 14px; cursor: pointer;
-      backdrop-filter: blur(6px); transition: .25s;
-    }
-    #toggleMusic:hover { background: rgba(168,139,255,.2); }
-
-    /* Mini badge en nav */
-    .brand { display: inline-flex; align-items: center; gap: 10px; }
-  </style>
 </head>
 
 <body>
   <!-- Fond animé -->
   <canvas class="bg"></canvas>
 
-  <!-- 🎧 Musique (bouton en haut, volume doux) -->
+  <!-- Musique -->
   <div id="musicControl">
     <button id="toggleMusic">🔈 Musique</button>
     <audio id="bgMusic" loop>
-      <source src="piano.mp3" type="audio/mpeg">
+      <source src="piano.mp3" type="audio/mpeg" />
     </audio>
   </div>
 
   <!-- Barre de navigation -->
   <nav>
-    <div class="inner">
-      <div class="brand">
-        <span class="ui-badge">Mode: <b id="uiModeBadge">auto</b></span>
-        <div class="brand">📚 Logarithmes</div>
-      </div>
-      <div class="row">
-        <a href="cours.html" class="btn accent">🎓 Cours</a>
-        <a href="exercices.html" class="btn">🧠 QCM & Exercices</a>
-        <a href="fiche.html" class="btn">🧾 Fiche Révision</a>
-        <a href="graph.html" class="btn">📈 Graphique</a>
-      </div>
+    <div class="brand">
+      <span class="ui-badge">Mode: <b id="uiModeBadge">auto</b></span>
+      📚 Logarithmes
+    </div>
+    <div class="row">
+      <a href="cours.html" class="btn accent">🎓 Cours</a>
+      <a href="exercices.html" class="btn">🧠 QCM & Exercices</a>
+      <a href="fiche.html" class="btn">🧾 Fiche Révision</a>
+      <a href="graph.html" class="btn">📈 Graphique</a>
     </div>
   </nav>
 
@@ -98,48 +40,46 @@
   <div class="container">
     <section class="card" style="text-align:center;">
       <h1>Les logarithmes enfin expliqués simplement</h1>
-      <p style="color:#a9b6cc;">
-        Comprends tout, étape par étape : définitions, règles, exercices et astuces.  
-        Apprends facilement ce que personne n’a su t’expliquer avant. 💡
+      <p class="small">
+        Définitions claires, formules essentielles, exercices corrigés et fiche express.<br>
+        Apprends enfin à comprendre, pas juste à retenir.
       </p>
 
-      <div class="row" style="justify-content:center; gap:14px; margin-top:16px;">
-        <a href="cours.html" class="btn accent">Commencer le cours ➜</a>
-        <a href="exercices.html" class="btn vert">Faire des exercices</a>
-        <a href="fiche.html" class="btn">Voir la fiche</a>
+      <div class="row" style="justify-content:center; gap:14px; margin-top:14px;">
+        <a href="cours.html" class="btn accent">🎓 Commencer ➜</a>
+        <a href="exercices.html" class="btn vert">🧠 S’entraîner</a>
+        <a href="fiche.html" class="btn">📄 Fiche</a>
       </div>
     </section>
 
-    <!-- Aperçu du contenu -->
     <div class="grid">
       <div class="card">
         <h3>📘 Cours interactif</h3>
-        <p>Découvre les logarithmes de façon claire et progressive, avec des animations et exemples concrets.</p>
+        <p class="small">Découvre les logarithmes à ton rythme avec des explications simples et des exemples concrets.</p>
       </div>
 
       <div class="card">
         <h3>🧠 QCM & Exercices</h3>
-        <p>Teste ta compréhension avec des QCM et des corrections détaillées à chaque erreur (voix masculine belge en option).</p>
+        <p class="small">Teste ta compréhension. Le prof virtuel (voix masculine belge) peut t’expliquer chaque erreur.</p>
       </div>
 
       <div class="card">
         <h3>📄 Fiche de révision</h3>
-        <p>Les formules essentielles, les pièges à éviter et les astuces à retenir juste avant ton contrôle.</p>
+        <p class="small">Les formules essentielles, les règles de base et les pièges à éviter.</p>
       </div>
 
       <div class="card">
         <h3>🎓 Certificat</h3>
-        <p>À la fin du test : score animé, saisie de ton nom, et diplôme premium à imprimer.</p>
+        <p class="small">À la fin du QCM, ton score et ton nom apparaissent sur un diplôme animé à imprimer.</p>
       </div>
     </div>
   </div>
 
-  <!-- Bouton calculatrice (optionnel si tu veux aussi ici) -->
+  <!-- Calculatrice -->
   <div class="calc-btn">
     <button id="btnCalc" class="btn vert">🧮 Calculatrice</button>
   </div>
 
-  <!-- Calculatrice flottante -->
   <div id="calcPanel" class="calc">
     <div class="calc-screen">
       <input id="calcIn" class="input" placeholder="ex: ln(10)/ln(2), 2^3, log(100)" />
@@ -176,71 +116,49 @@
     <div id="calcOut" class="calc-screen" style="margin-top:10px; min-height:30px;"></div>
   </div>
 
-  <!-- Popup de choix PC/Mobile -->
-  <div id="uiModal" class="ui-modal">
-    <div class="ui-card">
-      <h3>Tu es sur quoi ?</h3>
-      <p>On adapte l’interface pour que tout soit plus confortable.</p>
-      <div class="ui-choices">
-        <button class="ui-option" id="chooseMobile">
-          📱 <b>Mobile</b>
-          <span>Touch + gros boutons + colonnes compactes</span>
-        </button>
-        <button class="ui-option" id="choosePC">
-          🖥️ <b>PC</b>
-          <span>Plus d’espace + grilles larges + raccourcis clavier</span>
-        </button>
+  <!-- Popup Choix PC/Mobile -->
+  <div id="uiModal" style="position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;z-index:15;padding:16px;">
+    <div style="width:min(560px,96%);background:#101829;color:#eaf2ff;border:1px solid #1d2a44;border-radius:18px;box-shadow:0 10px 30px #0008;padding:18px;text-align:center;">
+      <h3 style="margin:8px 0 2px;color:#ffd166;">Tu es sur quoi ?</h3>
+      <p style="margin:4px 0 14px;color:#a9b6cc;">On adapte l’interface pour ton confort.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <button id="chooseMobile" class="btn">📱 Mobile</button>
+        <button id="choosePC" class="btn">🖥️ PC</button>
       </div>
-      <div class="ui-foot">Tu pourras changer plus tard depuis le badge en haut.</div>
+      <div class="small" style="margin-top:10px;">Tu pourras changer plus tard en cliquant sur le badge “Mode”.</div>
     </div>
   </div>
 
   <!-- Pied de page -->
   <footer>
-    Site créé par <span>spilerix</span> – pour comprendre avant de réussir ⚡
+    Site créé par <b>spilerix</b> – pour comprendre avant de réussir ⚡
   </footer>
 
+  <!-- Script mode PC/Mobile -->
   <script>
-    /* ====== Gestion du choix PC / Mobile ====== */
-    (function uiChooser(){
+    (function(){
       const modal = document.getElementById('uiModal');
       const badge = document.getElementById('uiModeBadge');
       const html  = document.documentElement;
 
       function apply(mode){
-        // mode: 'mobile' | 'pc'
         localStorage.setItem('uiMode', mode);
         html.setAttribute('data-ui', mode);
         badge.textContent = mode;
-        // tweaks simples (tu peux affiner dans styles.css avec [data-ui="mobile"] ...)
-        if (mode === 'mobile') {
-          document.body.style.setProperty('--arrondi', '18px');
-        } else {
-          document.body.style.setProperty('--arrondi', '18px');
-        }
       }
 
-      // Badge cliquable pour re-choisir
-      badge.parentElement.addEventListener('click', ()=>{
-        modal.classList.add('show');
-      });
+      badge.parentElement.addEventListener('click',()=> modal.style.display='flex');
 
-      // Premier démarrage : si pas de préférence, on affiche
       const saved = localStorage.getItem('uiMode');
-      if (!saved) {
-        modal.classList.add('show');
-        badge.textContent = 'auto';
+      if(!saved){
+        modal.style.display='flex';
+        badge.textContent='auto';
       } else {
         apply(saved);
       }
 
-      // Choix boutons
-      document.getElementById('chooseMobile').onclick = ()=>{
-        apply('mobile'); modal.classList.remove('show');
-      };
-      document.getElementById('choosePC').onclick = ()=>{
-        apply('pc'); modal.classList.remove('show');
-      };
+      document.getElementById('chooseMobile').onclick = ()=>{apply('mobile'); modal.style.display='none';};
+      document.getElementById('choosePC').onclick = ()=>{apply('pc'); modal.style.display='none';};
     })();
   </script>
 </body>

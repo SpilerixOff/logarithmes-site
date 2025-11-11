@@ -1,140 +1,159 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cours – Comprendre les Logarithmes</title>
-  <link rel="stylesheet" href="styles.css">
-  <script defer src="script.js"></script>
-</head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cours – Logarithmes</title>
 
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
+
+  <style>
+    .tip{background:rgba(103,221,181,.12);border:1px solid rgba(103,221,181,.35);padding:12px;border-radius:12px}
+    .warn{background:rgba(239,71,111,.12);border:1px solid rgba(239,71,111,.4);padding:12px;border-radius:12px}
+    .ex{background:rgba(255,255,255,.05);border:1px dashed #1d2a44;padding:12px;border-radius:12px}
+    .step{margin:.3rem 0}
+    .kbd{display:inline-block;padding:2px 6px;border:1px solid #2d3760;border-radius:6px;background:#0b1423}
+    .pill{display:inline-block;padding:2px 8px;border-radius:999px;background:#22284a;border:1px solid #2d3760}
+  </style>
+</head>
 <body>
+  <!-- Fond -->
   <canvas class="bg"></canvas>
 
+  <!-- Musique (facultatif) -->
+  <div id="musicControl">
+    <button id="toggleMusic">🔈 Musique</button>
+    <audio id="bgMusic" loop>
+      <source src="piano.mp3" type="audio/mpeg" />
+    </audio>
+  </div>
+
+  <!-- Nav -->
   <nav>
-    <div class="inner">
-      <div class="brand">🎓 Cours Logarithmes</div>
-      <div class="row">
-        <a href="index.html" class="btn">🏠 Accueil</a>
-        <a href="exercices.html" class="btn">🧠 QCM</a>
-        <a href="fiche.html" class="btn">📄 Fiche</a>
-      </div>
+    <div class="brand">🎓 Cours Logarithmes</div>
+    <div class="row">
+      <a href="index.html" class="btn">🏠 Accueil</a>
+      <a href="exercices.html" class="btn">🧠 QCM</a>
+      <a href="fiche.html" class="btn">📄 Fiche</a>
     </div>
   </nav>
 
   <div class="container">
-    <section class="card" style="text-align:center;">
+    <!-- Intro -->
+    <section class="card" style="text-align:center">
       <h1>Comprendre les logarithmes pas à pas</h1>
-      <p style="color:#a9b6cc;">
-        Pas besoin d’être un génie en maths. Les logarithmes, c’est juste une autre façon d’écrire une puissance.  
-        Clique sur chaque chapitre 👇
+      <p class="small">
+        Idée clé : le logarithme “demande” l’exposant.  
+        <b>Si</b> \(a^x=b\) <b>alors</b> \( \log_a(b) = x \).
+      </p>
+      <div class="row" style="justify-content:center;gap:10px">
+        <a href="#def" class="btn accent">Définition</a>
+        <a href="#props" class="btn">Propriétés</a>
+        <a href="#change" class="btn">Changement de base</a>
+        <a href="#domain" class="btn">Domaine</a>
+      </div>
+    </section>
+
+    <!-- Définition -->
+    <section id="def" class="card">
+      <h2>1) Définition & bases</h2>
+      <p>
+        Pour une base \(a>0\) avec \(a\neq 1\) et un nombre \(b>0\) :
+        <br> <b>Définition</b> : \( \log_a(b) \) est l’exposant \(x\) tel que \( a^x = b \).
+      </p>
+      <div class="ex">
+        <div class="step">👉 \( \log_{10}(1000) = 3 \) car \(10^3 = 1000\).</div>
+        <div class="step">👉 \( \ln(e^5) = 5 \) car \( \ln \) est en base \(e \approx 2{,}718\).</div>
+        <div class="step">👉 \( \log_2(8)=3 \) car \(2^3=8\).</div>
+      </div>
+      <p class="tip" style="margin-top:10px;">
+        <b>Mémo :</b> <span class="pill">log</span> signifie souvent base 10.  
+        <span class="pill">ln</span> signifie base \(e\).
       </p>
     </section>
 
-    <!-- Chapitre 1 -->
-    <div class="card">
-      <h2>1️⃣ Rappel : les puissances</h2>
-      <p>Avant de parler de logarithmes, souviens-toi :</p>
-      <p><b>2⁴ = 16</b> veut dire qu’on multiplie 2 quatre fois : 2 × 2 × 2 × 2 = 16.</p>
-      <div class="small">💬 L’exposant (ici 4) te dit combien de fois on multiplie la base (ici 2).</div>
+    <!-- Propriétés -->
+    <section id="props" class="card">
+      <h2>2) Propriétés indispensables</h2>
+      <p><b>Produit</b> : \( \log_a(xy) = \log_a x + \log_a y \)</p>
+      <p><b>Quotient</b> : \( \log_a\!\left(\frac{x}{y}\right) = \log_a x - \log_a y \)</p>
+      <p><b>Puissance</b> : \( \log_a(x^r) = r \cdot \log_a x \)</p>
 
-      <button class="btn accent" onclick="voice.speak('Deux puissance quatre égale seize. Le logarithme fait l\'inverse.');">
-        🔊 Expliquer à voix haute
-      </button>
-    </div>
-
-    <!-- Chapitre 2 -->
-    <div class="card">
-      <h2>2️⃣ Définition du logarithme</h2>
-      <p>Le logarithme, c’est l’opération <b>inverse</b> de la puissance.</p>
-      <p>Si <b>2⁴ = 16</b>, alors <b>log₂(16) = 4</b>.</p>
-      <p>➡️ Ça veut dire : <i>combien de fois faut-il multiplier 2 pour obtenir 16 ?</i></p>
-
-      <div class="small">
-        💡 <b>Formule générale :</b> si <b>a<sup>x</sup> = b</b>, alors <b>logₐ(b) = x</b>.
+      <div class="ex">
+        <div class="step">Ex1 — \( \log(200) = \log(2\times100)=\log 2 + \log 100 = 0{,}3010 + 2 = 2{,}3010 \) (approx).</div>
+        <div class="step">Ex2 — \( \log\!\left(\frac{50}{5}\right)=\log 50 - \log 5 \).</div>
+        <div class="step">Ex3 — \( \log_3(9^4)=4\log_3 9 = 4\times2 = 8 \).</div>
       </div>
 
-      <button class="btn" onclick="alert('Retenir : log₂(16) = 4 car 2 puissance 4 = 16. Le logarithme donne l’exposant.')">
-        📘 Pas compris ? Clique ici
-      </button>
-    </div>
+      <p class="warn" style="margin-top:10px;">
+        <b>Erreur fréquente :</b> <u>ne pas</u> écrire \( \log(xy)=\log x \cdot \log y \).  
+        C’est <b>une somme</b>, pas un produit.
+      </p>
+    </section>
 
-    <!-- Chapitre 3 -->
-    <div class="card">
-      <h2>3️⃣ Les trois règles fondamentales</h2>
-
-      <p>1️⃣ Produit → <b>logₐ(xy) = logₐx + logₐy</b></p>
-      <p>2️⃣ Quotient → <b>logₐ(x/y) = logₐx − logₐy</b></p>
-      <p>3️⃣ Puissance → <b>logₐ(xʳ) = r · logₐx</b></p>
-
-      <div class="small">
-        💬 Multiplier → additionner, diviser → soustraire, exposant → descendre.
+    <!-- Changement de base -->
+    <section id="change" class="card">
+      <h2>3) Changement de base</h2>
+      <p>
+        Pour calculer facilement avec ta calculatrice :  
+        \( \displaystyle \log_a(x) = \frac{\ln(x)}{\ln(a)} = \frac{\log(x)}{\log(a)} \)
+      </p>
+      <div class="ex">
+        <div class="step">Ex — \( \log_2(7) = \dfrac{\ln 7}{\ln 2} \approx \dfrac{1{,}9459}{0{,}6931} \approx 2{,}81 \).</div>
       </div>
+      <p class="tip" style="margin-top:10px;">
+        Astuce rapide examen : tape <span class="kbd">ln(7)/ln(2)</span>.
+      </p>
+    </section>
 
-      <button class="btn accent" onclick="voice.speak('Multiplier devient additionner, diviser devient soustraire, et les exposants descendent devant.');">
-        🔊 Expliquer à voix haute
-      </button>
-    </div>
-
-    <!-- Chapitre 4 -->
-    <div class="card">
-      <h2>4️⃣ Erreurs à ne jamais faire</h2>
-      <ul>
-        <li>❌ log(x + y) ≠ logx + logy</li>
-        <li>❌ log(0) et log(-1) → impossible (car le log n’existe que pour x > 0)</li>
-        <li>⚠️ ln(x) = logₑ(x) → “ln” veut juste dire log de base e ≈ 2,718</li>
-      </ul>
-      <div class="small">👉 Retenir : le logarithme ne prend que des valeurs positives.</div>
-    </div>
-
-    <!-- Chapitre 5 -->
-    <div class="card">
-      <h2>5️⃣ Exemples concrets</h2>
-      <ul>
-        <li>🎧 Le <b>son</b> en décibels → mesure logarithmique</li>
-        <li>🌋 Le <b>pH</b> d’un liquide → basé sur un log</li>
-        <li>🌎 L’échelle de <b>Richter</b> pour les séismes → log₁₀ de l’énergie</li>
-      </ul>
-      <div class="small">💬 Ces mesures compressent de grands nombres grâce au log.</div>
-    </div>
-
-    <!-- Chapitre 6 -->
-    <div class="card">
-      <h2>6️⃣ Exemple complet</h2>
-      <p>Calcule <b>log₂(32)</b></p>
-      <p>On cherche combien de fois il faut multiplier 2 pour avoir 32.</p>
-      <p>2 × 2 × 2 × 2 × 2 = 32 → il faut 5 fois.</p>
-      <div class="small">✅ Résultat : log₂(32) = 5</div>
-    </div>
-
-    <!-- Chapitre 7 -->
-    <div class="card">
-      <h2>7️⃣ Résumé à retenir</h2>
-      <ul>
-        <li>logₐ(a) = 1</li>
-        <li>logₐ(1) = 0</li>
-        <li>logₐ(xʳ) = r · logₐx</li>
-        <li>logₐ(xy) = logₐx + logₐy</li>
-        <li>logₐ(x/y) = logₐx − logₐy</li>
-        <li>logₐx = ln(x) / ln(a)</li>
-      </ul>
-      <div class="small">
-        ✏️ Apprends ces 6 formules, et tu réussiras ton contrôle.
+    <!-- Domaine -->
+    <section id="domain" class="card">
+      <h2>4) Domaine (quand c’est défini ?)</h2>
+      <p>
+        L’argument du logarithme doit être <b>strictement positif</b>.  
+        Exemples :
+      </p>
+      <div class="ex">
+        <div class="step">• \( \ln(x) \) existe si \( x > 0 \).</div>
+        <div class="step">• \( \ln(2x-1) \) existe si \( 2x-1 > 0 \Rightarrow x > \tfrac12 \).</div>
+        <div class="step">• \( \log_3(x^2-9) \) existe si \( x^2-9>0 \Rightarrow x<-3 \) ou \( x>3 \).</div>
       </div>
-    </div>
+      <p class="warn" style="margin-top:10px;">
+        Tu ne peux pas faire \( \log(0) \) ni \( \log(\text{nombre négatif}) \).
+      </p>
+    </section>
 
-    <!-- Boutons de navigation -->
-    <div class="card" style="text-align:center;">
-      <h3>Prêt pour t’entraîner ?</h3>
-      <div class="row" style="justify-content:center; gap:20px;">
-        <a href="exercices.html" class="btn vert">Faire des exercices ➜</a>
-        <a href="fiche.html" class="btn">Fiche de révision</a>
+    <!-- Méthode d'exercices -->
+    <section class="card">
+      <h2>5) Méthode pas-à-pas pour les exercices</h2>
+      <ol>
+        <li><b>Vérifie le domaine</b> : l’expression dans le log doit être positive.</li>
+        <li><b>Simplifie</b> en utilisant les propriétés (produit, quotient, puissance).</li>
+        <li><b>Change de base</b> si nécessaire pour calculer.</li>
+        <li><b>Interprète</b> : \( \log_a(b)=x \Rightarrow a^x=b \).</li>
+      </ol>
+      <div class="tip">
+        <b>Astuces examen :</b> garde en tête <span class="pill">produit → +</span>,
+        <span class="pill">quotient → −</span>, <span class="pill">puissance → facteur</span>.
       </div>
-    </div>
+    </section>
+
+    <!-- Actions -->
+    <section class="card" style="text-align:center">
+      <div class="row" style="justify-content:center;gap:10px">
+        <a href="exercices.html" class="btn vert">🧠 Passer aux exercices ➜</a>
+        <a href="fiche.html" class="btn">📄 Voir la fiche</a>
+      </div>
+    </section>
   </div>
 
-  <footer>
-    Site créé par <span>spilerixoff</span> – pour comprendre avant de réussir ⚡
-  </footer>
+  <footer>Site créé par <b>spilerix</b> – pour comprendre avant de réussir ⚡</footer>
+
+  <!-- MathJax (affichage jolies formules) -->
+  <script>
+    window.MathJax = { tex: { inlineMath: [['\\(','\\)'], ['$', '$']] } };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </body>
 </html>

@@ -2,188 +2,38 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Exercices Logarithmes – Spilerix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Exercices – Logarithmes</title>
+
+  <!-- Styles globaux -->
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- QCM (questions, voix, certificat) -->
   <script defer src="script_qcm.js"></script>
+
+  <!-- Script commun (fond animé, calculatrice si présente, musique) -->
   <script defer src="script.js"></script>
 
   <style>
-    body {
-      background: radial-gradient(circle at bottom, #0d0d18, #000);
-      color: #fff;
-      overflow-x: hidden;
-      font-family: "Poppins", sans-serif;
-      margin: 0;
-      padding: 0;
-    }
+    /* Ajustements spécifiques à la page */
+    h1 { margin: 0 0 6px; }
+    #quizBox h2 { margin-top: 0; }
 
-    canvas.bg {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-    }
+    /* Bande d'aide repliable (mobile-friendly) */
+    details.tips { background: rgba(255,255,255,.05); border:1px solid #1d2a44; border-radius:12px; padding:12px; }
+    details.tips > summary { cursor:pointer; list-style:none; font-weight:700; color:#a88bff; }
+    details.tips > summary::-webkit-details-marker { display:none; }
+    details.tips p, details.tips ul { margin:.5rem 0 0 0; }
 
-    nav {
-      padding: 15px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(8px);
-      flex-wrap: wrap;
-    }
-
-    .brand {
-      font-weight: 700;
-      font-size: 1.2em;
-      color: #a88bff;
-    }
-
-    .btn {
-      background: #252547;
-      border: none;
-      border-radius: 10px;
-      color: white;
-      padding: 10px 16px;
-      cursor: pointer;
-      transition: 0.2s;
-      font-size: 1rem;
-    }
-
-    .btn:hover {
-      background: #3a3a6d;
-    }
-
-    .btn.vert {
-      background: #2b9348;
-    }
-
-    .btn.vert:hover {
-      background: #37b358;
-    }
-
-    .container {
-      max-width: 950px;
-      margin: 80px auto;
-      padding: 20px;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 14px;
-      padding: 25px;
-      margin-bottom: 25px;
-      box-shadow: 0 0 15px rgba(100, 100, 255, 0.1);
-    }
-
-    #options {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .option {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 14px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.2s;
-      border: 1px solid transparent;
-      text-align: left;
-      font-size: 1rem;
-    }
-
-    .option:hover {
-      background: rgba(168, 139, 255, 0.25);
-      border-color: rgba(168, 139, 255, 0.5);
-    }
-
-    .option.correct {
-      background: rgba(50, 200, 100, 0.25);
-      border-color: #2b9348;
-    }
-
-    .option.wrong {
-      background: rgba(255, 60, 60, 0.25);
-      border-color: #ff5555;
-    }
-
-    .feedback {
-      margin-top: 15px;
-      font-style: italic;
-      color: #dcdcdc;
-      min-height: 60px;
-      text-align: center;
-      transition: all 0.2s ease;
-    }
-
-    footer {
-      text-align: center;
-      margin: 40px 0;
-      color: #a88bff;
-      font-size: 0.9rem;
-    }
-
-    /* Bouton Musique (en haut à droite) */
-    #musicControl {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      z-index: 999;
-    }
-
-    #toggleMusic {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #a88bff;
-      border-radius: 50px;
-      padding: 8px 14px;
-      cursor: pointer;
-      backdrop-filter: blur(5px);
-      transition: 0.3s;
-    }
-
-    #toggleMusic:hover {
-      background: rgba(168, 139, 255, 0.2);
-    }
-
-    /* Responsive */
-    @media (max-width: 720px) {
-      nav {
-        padding: 10px 16px;
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .btn {
-        font-size: 0.9rem;
-        padding: 8px 12px;
-      }
-
-      h1 {
-        font-size: 1.4rem;
-      }
-
-      .container {
-        margin-top: 60px;
-        padding: 14px;
-      }
-
-      .option {
-        font-size: 0.9rem;
-        padding: 12px;
-      }
-    }
+    /* Surlignage pour l’état “non répondu” quand on clique Suivant */
+    #nextQuestion.attn { box-shadow:0 0 12px #67ddb5 !important; transform:scale(1.04); }
   </style>
 </head>
-
 <body>
+  <!-- Fond animé -->
   <canvas class="bg"></canvas>
 
-  <!-- 🎧 Musique en haut -->
+  <!-- Musique (tolérante si piano.mp3 absent) -->
   <div id="musicControl">
     <button id="toggleMusic">🔈 Musique</button>
     <audio id="bgMusic" loop>
@@ -193,84 +43,80 @@
 
   <!-- Navigation -->
   <nav>
-    <div class="brand">🧮 Exercices Logarithmes</div>
+    <div class="brand">🧠 Exercices Logarithmes</div>
     <div class="row">
       <a href="index.html" class="btn">🏠 Accueil</a>
       <a href="cours.html" class="btn">📘 Cours</a>
       <a href="fiche.html" class="btn">📄 Fiche</a>
+      <a href="graph.html" class="btn">📈 Graphique</a>
     </div>
   </nav>
 
+  <!-- Contenu -->
   <div class="container">
     <section class="card" style="text-align:center;">
       <h1>Teste ta compréhension</h1>
-      <p>Réponds à chaque question.  
-      Si tu te trompes, tu verras l’explication détaillée, et tu peux activer la voix du prof Spilerix.</p>
+      <p class="small">
+        Réponds à chaque question, puis clique <b>Suivant</b>.  
+        Tu peux activer la <b>voix masculine</b> (bouton 🔊) pour écouter les explications orales.
+      </p>
     </section>
 
-    <div id="quizBox" class="card">
-      <h2 id="questionTitle">Chargement de la question...</h2>
-      <div id="options"></div>
-      <div id="feedback" class="feedback"></div>
+    <div id="quizBox" class="card" role="region" aria-label="QCM Logarithmes">
+      <h2 id="questionTitle">Chargement…</h2>
 
-      <div class="row" style="margin-top:20px;justify-content:space-between;">
-        <button id="toggleVoice" class="btn">🔊 Activer la voix</button>
-        <button id="nextQuestion" class="btn vert">➡️ Suivant</button>
+      <!-- Options générées par script_qcm.js -->
+      <div id="options" aria-live="polite"></div>
+
+      <!-- Feedback (explication) -->
+      <div id="feedback" class="feedback" aria-live="polite"></div>
+
+      <!-- Commandes -->
+      <div class="row" style="margin-top:14px;justify-content:space-between;">
+        <button id="toggleVoice" class="btn" type="button" aria-pressed="false" title="Activer/Désactiver la voix masculine">
+          🔊 Activer la voix
+        </button>
+        <button id="nextQuestion" class="btn vert" type="button" title="Passer à la question suivante">
+          ➡️ Suivant
+        </button>
       </div>
 
-      <div id="progress" style="margin-top:10px;opacity:0.8;text-align:center;"></div>
+      <div id="progress" class="small" style="margin-top:8px;text-align:center;opacity:.85"></div>
     </div>
+
+    <!-- Bande d’aide repliable -->
+    <section class="card">
+      <details class="tips" open>
+        <summary>🧩 Astuces rapides (ouvrir/fermer)</summary>
+        <ul class="small" style="margin:6px 0 0 18px;">
+          <li><b>Produit</b> : log(xy) = log x <b>+</b> log y</li>
+          <li><b>Quotient</b> : log(x/y) = log x <b>−</b> log y</li>
+          <li><b>Puissance</b> : log(x^r) = <b>r</b> · log x</li>
+          <li><b>Changement de base</b> : logₐ(x) = ln(x)/ln(a)</li>
+          <li><b>Domaine</b> : argument du log strictement <b>positif</b></li>
+        </ul>
+      </details>
+    </section>
   </div>
 
+  <!-- Pied de page -->
   <footer>
     Site créé par <b>spilerix</b> – pour comprendre avant de réussir ⚡
   </footer>
 
-  <!-- Fond animé -->
   <script>
-    const cvs = document.querySelector(".bg");
-    const ctx = cvs.getContext("2d");
-    let W, H, parts = [];
-
-    function resize() {
-      W = cvs.width = window.innerWidth;
-      H = cvs.height = window.innerHeight;
-    }
-
-    addEventListener("resize", resize);
-    resize();
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * W;
-        this.y = Math.random() * H;
-        this.t = Math.random() < 0.5 ? "+" : "log";
-        this.s = 16 + Math.random() * 18;
-        this.v = 0.3 + Math.random() * 0.5;
-        this.a = 0.2 + Math.random() * 0.4;
-      }
-      update() {
-        this.y -= this.v;
-        if (this.y < -30) {
-          this.y = H + 30;
-          this.x = Math.random() * W;
+    // Mini-sécurité visuelle si on clique "Suivant" avant de répondre
+    const btnNext = document.getElementById('nextQuestion');
+    const optionsBox = document.getElementById('options');
+    if (btnNext && optionsBox) {
+      btnNext.addEventListener('click', () => {
+        // script_qcm.js gère le vrai contrôle; ici on ne fait qu’un petit effet
+        if (!optionsBox.querySelector('.correct') && !optionsBox.querySelector('.wrong')) {
+          btnNext.classList.add('attn');
+          setTimeout(()=>btnNext.classList.remove('attn'), 220);
         }
-      }
-      draw() {
-        ctx.globalAlpha = this.a;
-        ctx.fillStyle = "#a88bff";
-        ctx.font = `700 ${this.s}px Inter`;
-        ctx.fillText(this.t, this.x, this.y);
-      }
+      });
     }
-
-    for (let i = 0; i < 90; i++) parts.push(new Particle());
-
-    (function animate() {
-      ctx.clearRect(0, 0, W, H);
-      parts.forEach((p) => { p.update(); p.draw(); });
-      requestAnimationFrame(animate);
-    })();
   </script>
 </body>
 </html>

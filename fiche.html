@@ -1,119 +1,151 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fiche de Révision – Logarithmes</title>
-  <link rel="stylesheet" href="styles.css">
-  <script defer src="script.js"></script>
-</head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fiche – Formules Logarithmes</title>
 
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
+
+  <style>
+    .tag{display:inline-block;padding:2px 8px;border-radius:999px;background:#22284a;border:1px solid #2d3760;margin-right:8px}
+    .must{background:rgba(103,221,181,.12);border-color:rgba(103,221,181,.45)}
+    .warn{background:rgba(239,71,111,.12);border-color:rgba(239,71,111,.5)}
+    .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    @media (max-width:760px){.grid2{grid-template-columns:1fr}}
+    .print-note{color:#a9b6cc;font-size:.9rem}
+  </style>
+</head>
 <body>
+  <!-- Fond animé -->
   <canvas class="bg"></canvas>
 
+  <!-- Musique (optionnelle) -->
+  <div id="musicControl">
+    <button id="toggleMusic">🔈 Musique</button>
+    <audio id="bgMusic" loop>
+      <source src="piano.mp3" type="audio/mpeg" />
+    </audio>
+  </div>
+
+  <!-- Nav -->
   <nav>
-    <div class="inner">
-      <div class="brand">🧾 Fiche de Révision</div>
-      <div class="row">
-        <a href="index.html" class="btn">🏠 Accueil</a>
-        <a href="cours.html" class="btn">🎓 Cours</a>
-        <a href="exercices.html" class="btn">🧠 QCM</a>
-      </div>
+    <div class="brand">🧾 Fiche de Révision – Logarithmes</div>
+    <div class="row">
+      <a href="index.html" class="btn">🏠 Accueil</a>
+      <a href="cours.html" class="btn">🎓 Cours</a>
+      <a href="exercices.html" class="btn">🧠 QCM</a>
     </div>
   </nav>
 
   <div class="container">
-    <section class="card" style="text-align:center;">
-      <h1>Fiche de révision des logarithmes</h1>
-      <p style="color:#a9b6cc;">Tout ce qu’il faut retenir pour réussir ton contrôle 🧠</p>
-      <button class="btn vert" onclick="window.print()">🖨️ Imprimer ou Télécharger en PDF</button>
+    <!-- En-tête -->
+    <section class="card" style="text-align:center">
+      <h1>Formules à savoir</h1>
+      <p class="small">Imprime cette page avant le contrôle (tout est regroupé).</p>
+      <button class="btn vert" onclick="window.print()">🖨️ Imprimer la fiche</button>
+      <div class="print-note">Astuce : en impression, choisis “arrière-plan graphique” si proposé, sinon le fond restera blanc (lisible).</div>
     </section>
 
-    <!-- Bloc 1 : définitions -->
-    <div class="card">
-      <h2>📘 Définition</h2>
-      <p>Le logarithme est l’opération <b>inverse</b> de la puissance :</p>
-      <p><b>a<sup>x</sup> = b</b> ⟺ <b>logₐ(b) = x</b></p>
-      <div class="small">💬 Le logarithme répond à la question : combien de fois faut-il multiplier la base <b>a</b> pour obtenir <b>b</b> ?</div>
-    </div>
+    <!-- À connaître absolument -->
+    <section class="card">
+      <h2>✅ À connaître absolument</h2>
+      <span class="tag must">Définition</span>
+      <p>\( a^x = b \iff \log_a(b) = x \), avec \( a>0, a\neq1, b>0 \).</p>
 
-    <!-- Bloc 2 : formules -->
-    <div class="card">
-      <h2>📐 Formules à connaître par cœur</h2>
-      <div class="grid">
-        <div class="card" style="background:#0b1423;">
-          <p><b>Produit :</b> logₐ(xy) = logₐx + logₐy</p>
-          <p class="small">→ Multiplie → Additionne</p>
+      <div class="grid2">
+        <div>
+          <span class="tag must">Produit</span>
+          <p>\( \log_a(xy) = \log_a x + \log_a y \)</p>
         </div>
-        <div class="card" style="background:#0b1423;">
-          <p><b>Quotient :</b> logₐ(x/y) = logₐx − logₐy</p>
-          <p class="small">→ Divise → Soustrais</p>
+        <div>
+          <span class="tag must">Quotient</span>
+          <p>\( \log_a\!\left(\frac{x}{y}\right) = \log_a x - \log_a y \)</p>
         </div>
-        <div class="card" style="background:#0b1423;">
-          <p><b>Puissance :</b> logₐ(xʳ) = r · logₐx</p>
-          <p class="small">→ L’exposant descend</p>
+        <div>
+          <span class="tag must">Puissance</span>
+          <p>\( \log_a(x^r) = r\cdot \log_a x \)</p>
         </div>
-        <div class="card" style="background:#0b1423;">
-          <p><b>Changement de base :</b> logₐx = ln(x)/ln(a)</p>
-          <p class="small">→ Pour calculer avec ta calculatrice</p>
+        <div>
+          <span class="tag must">Inverse de \(e^x\)</span>
+          <p>\( \ln(e^k) = k \) et \( e^{\ln k} = k \) (pour \(k>0\)).</p>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Bloc 3 : propriétés utiles -->
-    <div class="card">
-      <h2>🧮 Propriétés essentielles</h2>
+    <!-- Très utile -->
+    <section class="card">
+      <h2>💡 Très utile</h2>
+      <div class="grid2">
+        <div>
+          <span class="tag">Changement de base</span>
+          <p>\( \displaystyle \log_a(x) = \frac{\ln(x)}{\ln(a)} = \frac{\log(x)}{\log(a)} \)</p>
+          <p class="small">Sur calculatrice : tape <code>ln(x)/ln(a)</code>.</p>
+        </div>
+        <div>
+          <span class="tag">Bases courantes</span>
+          <p>\( \log(x) \) : base 10 &nbsp; | &nbsp; \( \ln(x) \) : base \(e\approx2{,}718\).</p>
+        </div>
+        <div>
+          <span class="tag">Valeurs utiles</span>
+          <p>\( \log(10)=1 \), \( \log(100)=2 \), \( \ln(e)=1 \).</p>
+        </div>
+        <div>
+          <span class="tag">Domaine</span>
+          <p>Un logarithme est défini <b>seulement si son argument est &gt; 0</b>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pièges à éviter -->
+    <section class="card">
+      <h2>⚠️ Pièges à éviter</h2>
       <ul>
-        <li>logₐ(a) = 1</li>
-        <li>logₐ(1) = 0</li>
-        <li>a^(logₐx) = x</li>
-        <li>Le log n’existe que pour x > 0</li>
+        <li>❌ \( \log(xy) \neq \log x \cdot \log y \) (c’est une <b>somme</b>).</li>
+        <li>❌ \( \log(0) \) n’existe pas, \( \log(x&lt;0) \) non plus (sur \(\mathbb{R}\)).</li>
+        <li>❌ Confondre \( \ln \) et \( \log \) : bases différentes.</li>
+        <li>❌ Oublier le domaine (ex : \( \ln(2x-1) \Rightarrow x>\tfrac12 \)).</li>
       </ul>
-    </div>
+    </section>
 
-    <!-- Bloc 4 : erreurs à éviter -->
-    <div class="card">
-      <h2>⚠️ Erreurs fréquentes à éviter</h2>
-      <ul>
-        <li>❌ log(x + y) ≠ logx + logy</li>
-        <li>❌ log(0) ou log(-1) → impossible</li>
-        <li>❌ oublier le domaine (x > 0)</li>
-        <li>❌ confondre log et ln → ln = log base e (≈2,718)</li>
-      </ul>
-    </div>
+    <!-- Exemples rapides -->
+    <section class="card">
+      <h2>🧪 Exemples rapides</h2>
+      <div class="grid2">
+        <div>
+          <p><b>1)</b> \( \log(200) = \log(2) + \log(100) \approx 0{,}3010 + 2 = 2{,}3010 \).</p>
+        </div>
+        <div>
+          <p><b>2)</b> \( \log_3(9^4) = 4\log_3 9 = 4\times2 = 8 \).</p>
+        </div>
+        <div>
+          <p><b>3)</b> \( \log_2(7) = \dfrac{\ln 7}{\ln 2} \approx 2{,}81 \).</p>
+        </div>
+        <div>
+          <p><b>4)</b> \( \ln(2x-1) \) défini si \( x>\tfrac12 \).</p>
+        </div>
+      </div>
+    </section>
 
-    <!-- Bloc 5 : méthode de résolution -->
-    <div class="card">
-      <h2>🧭 Méthode pour résoudre une équation logarithmique</h2>
-      <ol>
-        <li>✅ <b>Domaine :</b> assure-toi que tout ce qui est dans le log est > 0.</li>
-        <li>📦 <b>Regroupe :</b> simplifie avec les règles (produit, quotient, puissance).</li>
-        <li>⚡ <b>Exponentialise :</b> transforme logₐ(x) = b en a<sup>b</sup> = x.</li>
-        <li>🧠 <b>Vérifie :</b> le résultat doit respecter le domaine.</li>
-      </ol>
-    </div>
-
-    <!-- Bloc 6 : mini-exemples -->
-    <div class="card">
-      <h2>📚 Exemples rapides</h2>
-      <ul>
-        <li>log₂(32) = 5 → car 2⁵ = 32</li>
-        <li>log₁₀(100) = 2 → car 10² = 100</li>
-        <li>log₃(27×9) = log₃(27)+log₃(9) = 3+2 = 5</li>
-        <li>log₂(1/8) = -3 → car 2⁻³ = 1/8</li>
-      </ul>
-    </div>
-
-    <!-- Bloc 7 : petit mémo final -->
-    <div class="card" style="text-align:center;">
-      <h3>🧠 À retenir absolument</h3>
-      <p>Le logarithme te dit <b>combien de fois</b> il faut multiplier la base pour obtenir un nombre.</p>
-      <p>Si tu maîtrises les <b>3 règles (× ÷ ^)</b> et la formule <b>logₐx = ln(x)/ln(a)</b>, tu réussis ton contrôle. 💪</p>
-    </div>
+    <!-- Boutons -->
+    <section class="card" style="text-align:center">
+      <div class="row" style="justify-content:center;gap:10px">
+        <a href="exercices.html" class="btn vert">🧠 S’entraîner ➜</a>
+        <button class="btn" onclick="window.print()">🖨️ Imprimer</button>
+        <a href="index.html" class="btn">🏠 Accueil</a>
+      </div>
+    </section>
   </div>
 
   <footer>
-    Site créé par <span>spilerixoff</span> – pour comprendre avant de réussir ⚡
+    Site créé par <b>spilerix</b> – pour comprendre avant de réussir ⚡
   </footer>
+
+  <!-- MathJax pour belles formules -->
+  <script>
+    window.MathJax = { tex: { inlineMath: [['\\(','\\)'], ['$', '$']] } };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </body>
 </html>
