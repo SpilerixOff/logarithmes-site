@@ -3,289 +3,274 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Certificat – Spilerix</title>
+  <title>Exercices Logarithmes – Spilerix</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script_qcm.js"></script>
+  <script defer src="script.js"></script>
+
   <style>
-    /* =============================
-       DESIGN GÉNÉRAL
-    ============================== */
     body {
-      margin: 0;
+      background: radial-gradient(circle at bottom, #0d0d18, #000);
+      color: #fff;
+      overflow-x: hidden;
       font-family: "Poppins", sans-serif;
-      background: radial-gradient(circle at center, #1a1125, #08030f);
-      color: white;
-      overflow: hidden;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
+      margin: 0;
+      padding: 0;
     }
 
     canvas.bg {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
-
-    /* =============================
-       CARTE DU CERTIFICAT
-    ============================== */
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid #a88bff;
-      border-radius: 25px;
-      padding: 50px 70px;
-      box-shadow: 0 0 35px rgba(168, 139, 255, 0.3);
-      position: relative;
-      animation: fadeIn 1.2s ease-in-out;
-      max-width: 800px;
-      backdrop-filter: blur(10px);
-    }
-
-    .border-light {
-      position: absolute;
       inset: 0;
-      border-radius: 25px;
-      border: 1px solid rgba(255,255,255,0.08);
+      z-index: -1;
+      pointer-events: none;
     }
 
-    /* =============================
-       TITRES ET TEXTES
-    ============================== */
-    h1 {
-      font-size: 2.6em;
-      color: #f5e6ff;
-      text-shadow: 0 0 20px #a88bff;
-      margin-bottom: 15px;
-      letter-spacing: 1px;
+    nav {
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      flex-wrap: wrap;
     }
 
-    h2 {
-      color: #d7baff;
-      font-size: 1.4em;
-      margin-bottom: 25px;
-      letter-spacing: 0.6px;
-    }
-
-    .name {
-      font-size: 2.3em;
+    .brand {
       font-weight: 700;
-      color: #ffd166;
-      text-shadow: 0 0 30px #ffd166;
-      margin: 10px 0 25px 0;
-      font-family: "Great Vibes", cursive;
-      animation: fadeInName 2s ease-in-out;
+      font-size: 1.2em;
+      color: #a88bff;
     }
 
-    .score {
-      font-size: 1.6em;
-      color: #67ddb5;
-      margin-bottom: 25px;
-    }
-
-    .content {
-      max-width: 550px;
-      margin: 0 auto;
-      opacity: 0.9;
-      line-height: 1.6em;
-    }
-
-    /* =============================
-       BOUTONS
-    ============================== */
     .btn {
-      background: linear-gradient(90deg, #a88bff, #67ddb5);
+      background: #252547;
       border: none;
-      border-radius: 12px;
-      padding: 14px 28px;
-      color: #0d0d18;
-      font-weight: bold;
+      border-radius: 10px;
+      color: white;
+      padding: 10px 16px;
       cursor: pointer;
       transition: 0.2s;
-      font-size: 1em;
-      margin: 8px;
+      font-size: 1rem;
     }
 
     .btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px #a88bff;
+      background: #3a3a6d;
+    }
+
+    .btn.vert {
+      background: #2b9348;
+    }
+
+    .btn.vert:hover {
+      background: #37b358;
+    }
+
+    .container {
+      max-width: 950px;
+      margin: 80px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 0 15px rgba(100, 100, 255, 0.1);
+    }
+
+    #options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .option {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+      border: 1px solid transparent;
+      text-align: left;
+      font-size: 1rem;
+    }
+
+    .option:hover {
+      background: rgba(168, 139, 255, 0.25);
+      border-color: rgba(168, 139, 255, 0.5);
+    }
+
+    .option.correct {
+      background: rgba(50, 200, 100, 0.25);
+      border-color: #2b9348;
+    }
+
+    .option.wrong {
+      background: rgba(255, 60, 60, 0.25);
+      border-color: #ff5555;
+    }
+
+    .feedback {
+      margin-top: 15px;
+      font-style: italic;
+      color: #dcdcdc;
+      min-height: 60px;
+      text-align: center;
+      transition: all 0.2s ease;
     }
 
     footer {
-      position: absolute;
-      bottom: 20px;
-      font-size: 0.9em;
-      color: #a88bff;
-      opacity: 0.8;
       text-align: center;
-      width: 100%;
+      margin: 40px 0;
+      color: #a88bff;
+      font-size: 0.9rem;
     }
 
-    /* =============================
-       ANIMATIONS
-    ============================== */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* Bouton Musique (en haut à droite) */
+    #musicControl {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 999;
     }
 
-    @keyframes fadeInName {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
+    #toggleMusic {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #a88bff;
+      border-radius: 50px;
+      padding: 8px 14px;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+      transition: 0.3s;
     }
 
-    @keyframes drawSignature {
-      0% { stroke-dashoffset: 400; opacity: 0; }
-      50% { opacity: 1; }
-      100% { stroke-dashoffset: 0; opacity: 1; }
+    #toggleMusic:hover {
+      background: rgba(168, 139, 255, 0.2);
     }
 
-    @media (max-width: 700px) {
-      .card { width: 85%; padding: 25px; }
-      h1 { font-size: 1.8em; }
-      .name { font-size: 1.6em; }
-    }
+    /* Responsive */
+    @media (max-width: 720px) {
+      nav {
+        padding: 10px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
 
-    /* =============================
-       SIGNATURE ANIMÉE
-    ============================== */
-    .signature {
-      width: 220px;
-      height: 80px;
-      margin: 20px auto 0 auto;
-    }
+      .btn {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+      }
 
-    .signature path {
-      stroke: #ffd166;
-      stroke-width: 2;
-      fill: none;
-      stroke-dasharray: 400;
-      stroke-dashoffset: 400;
-      animation: drawSignature 3s ease forwards 1.2s;
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      .container {
+        margin-top: 60px;
+        padding: 14px;
+      }
+
+      .option {
+        font-size: 0.9rem;
+        padding: 12px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <!-- Fond animé -->
   <canvas class="bg"></canvas>
 
-  <div class="card">
-    <div class="border-light"></div>
-    <h1>🎓 Certificat de réussite</h1>
-    <h2>Attribué à :</h2>
+  <!-- 🎧 Musique en haut -->
+  <div id="musicControl">
+    <button id="toggleMusic">🔈 Musique</button>
+    <audio id="bgMusic" loop>
+      <source src="piano.mp3" type="audio/mpeg" />
+    </audio>
+  </div>
 
-    <div class="name">spilerix</div>
-
-    <div class="score" id="scoreDisplay">Score : 0%</div>
-
-    <p class="content">
-      Ce certificat atteste que <b>spilerix</b> a terminé avec succès le test de compréhension des logarithmes,
-      démontrant une excellente maîtrise des fondements mathématiques et une progression constante dans l’apprentissage.
-    </p>
-
-    <div style="margin-top:25px;">
-      <button class="btn" id="downloadPDF">📄 Télécharger en PDF</button>
-      <button class="btn" onclick="window.location.href='exercices.html'">🔁 Refaire le test</button>
-      <button class="btn" onclick="window.location.href='index.html'">🏠 Retour à l'accueil</button>
+  <!-- Navigation -->
+  <nav>
+    <div class="brand">🧮 Exercices Logarithmes</div>
+    <div class="row">
+      <a href="index.html" class="btn">🏠 Accueil</a>
+      <a href="cours.html" class="btn">📘 Cours</a>
+      <a href="fiche.html" class="btn">📄 Fiche</a>
     </div>
+  </nav>
 
-    <!-- Signature animée -->
-    <svg class="signature" viewBox="0 0 500 200">
-      <path d="M10,100 Q80,10 150,100 T300,100 Q350,140 400,100 T480,100" />
-    </svg>
+  <div class="container">
+    <section class="card" style="text-align:center;">
+      <h1>Teste ta compréhension</h1>
+      <p>Réponds à chaque question.  
+      Si tu te trompes, tu verras l’explication détaillée, et tu peux activer la voix du prof Spilerix.</p>
+    </section>
+
+    <div id="quizBox" class="card">
+      <h2 id="questionTitle">Chargement de la question...</h2>
+      <div id="options"></div>
+      <div id="feedback" class="feedback"></div>
+
+      <div class="row" style="margin-top:20px;justify-content:space-between;">
+        <button id="toggleVoice" class="btn">🔊 Activer la voix</button>
+        <button id="nextQuestion" class="btn vert">➡️ Suivant</button>
+      </div>
+
+      <div id="progress" style="margin-top:10px;opacity:0.8;text-align:center;"></div>
+    </div>
   </div>
 
   <footer>
     Site créé par <b>spilerix</b> – pour comprendre avant de réussir ⚡
   </footer>
 
+  <!-- Fond animé -->
   <script>
-    // =========================
-    // FOND AVEC PARTICULES DORÉES ✨
-    // =========================
-    const canvas = document.querySelector('.bg');
-    const ctx = canvas.getContext('2d');
-    let W, H;
-    const particles = [];
+    const cvs = document.querySelector(".bg");
+    const ctx = cvs.getContext("2d");
+    let W, H, parts = [];
 
     function resize() {
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
+      W = cvs.width = window.innerWidth;
+      H = cvs.height = window.innerHeight;
     }
-    window.addEventListener('resize', resize);
+
+    addEventListener("resize", resize);
     resize();
 
     class Particle {
       constructor() {
         this.x = Math.random() * W;
         this.y = Math.random() * H;
-        this.size = 1 + Math.random() * 2;
-        this.speedY = 0.3 + Math.random() * 0.7;
-        this.alpha = 0.3 + Math.random() * 0.5;
-      }
-      draw() {
-        ctx.globalAlpha = this.alpha;
-        ctx.fillStyle = "#ffd166";
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
-        ctx.fill();
+        this.t = Math.random() < 0.5 ? "+" : "log";
+        this.s = 16 + Math.random() * 18;
+        this.v = 0.3 + Math.random() * 0.5;
+        this.a = 0.2 + Math.random() * 0.4;
       }
       update() {
-        this.y -= this.speedY;
-        if (this.y < 0) {
-          this.y = H + 10;
+        this.y -= this.v;
+        if (this.y < -30) {
+          this.y = H + 30;
           this.x = Math.random() * W;
         }
       }
+      draw() {
+        ctx.globalAlpha = this.a;
+        ctx.fillStyle = "#a88bff";
+        ctx.font = `700 ${this.s}px Inter`;
+        ctx.fillText(this.t, this.x, this.y);
+      }
     }
 
-    for (let i = 0; i < 120; i++) particles.push(new Particle());
+    for (let i = 0; i < 90; i++) parts.push(new Particle());
 
-    function animate() {
+    (function animate() {
       ctx.clearRect(0, 0, W, H);
-      particles.forEach(p => { p.update(); p.draw(); });
+      parts.forEach((p) => { p.update(); p.draw(); });
       requestAnimationFrame(animate);
-    }
-    animate();
-
-    // =========================
-    // SCORE AUTOMATIQUE
-    // =========================
-    const score = localStorage.getItem("dernierScore") || 0;
-    document.getElementById("scoreDisplay").textContent = "Score : " + score + "%";
-
-    // =========================
-    // TÉLÉCHARGEMENT PDF
-    // =========================
-    document.getElementById("downloadPDF").onclick = () => {
-      const win = window.open('', '_blank');
-      win.document.write(`
-        <html>
-        <head><title>Certificat Spilerix</title></head>
-        <body style="text-align:center;font-family:Poppins;background:#1a1125;color:white;padding:60px;">
-          <h1 style="color:#f5e6ff;">🎓 Certificat de Réussite</h1>
-          <h2 style="color:#ffd166;">Attribué à : <b>spilerix</b></h2>
-          <p style="font-size:1.2em;">Score obtenu : <b>${score}%</b></p>
-          <p style="max-width:500px;margin:auto;margin-top:20px;">
-            Ce certificat atteste que spilerix a démontré sa compréhension des logarithmes avec succès.
-          </p>
-          <svg viewBox='0 0 500 200' width='250'>
-            <path d='M10,100 Q80,10 150,100 T300,100 Q350,140 400,100 T480,100'
-              stroke='#ffd166' stroke-width='2' fill='none'/>
-          </svg>
-          <p style="margin-top:40px;color:#a88bff;">
-            Site créé par <b>spilerix</b> – pour comprendre avant de réussir ⚡
-          </p>
-        </body>
-        </html>
-      `);
-      win.print();
-    };
+    })();
   </script>
 </body>
 </html>

@@ -1,117 +1,81 @@
 // ==========================
-// SPILERIX QCM LOGARITHMES
+// SPILERIX — QCM LOGARITHMES
+// Voix masculine belge • Popup nom • Certificat
 // ==========================
 
-let questions = [
-  {
-    question: "1️⃣ Quelle est la propriété du produit des logarithmes ?",
-    options: [
-      "log(a×b) = log a × log b",
-      "log(a×b) = log a + log b",
-      "log(a×b) = log a − log b"
-    ],
-    correct: 1,
-    explanation:
-      "La propriété du produit est : log(a×b) = log a + log b. On additionne les logs d’un produit.",
-  },
-  {
-    question: "2️⃣ Si ln(2x−1) existe, quelle condition doit respecter x ?",
-    options: ["x > 1/2", "x ≥ 0", "x > 0"],
-    correct: 0,
-    explanation: "Pour que ln(2x−1) soit défini, il faut que 2x−1 > 0 ⇒ x > 1/2.",
-  },
-  {
-    question: "3️⃣ log(10) vaut…",
-    options: ["1", "10", "0"],
-    correct: 0,
-    explanation: "log(10) = 1 car log signifie log base 10. Donc 10¹ = 10.",
-  },
-  {
-    question: "4️⃣ Quelle est la propriété du quotient des logarithmes ?",
-    options: [
-      "log(a/b) = log a + log b",
-      "log(a/b) = log a − log b",
-      "log(a/b) = log a × log b"
-    ],
-    correct: 1,
-    explanation: "La propriété du quotient est : log(a/b) = log a − log b.",
-  },
-  {
-    question: "5️⃣ log_a(x^r) = ?",
-    options: [
-      "r × log_a(x)",
-      "x × log_a(r)",
-      "r / log_a(x)"
-    ],
-    correct: 0,
-    explanation:
-      "log_a(x^r) = r × log_a(x). L’exposant devient un coefficient devant le log.",
-  },
-  {
-    question: "6️⃣ Quelle est la base de ln(x) ?",
-    options: ["10", "2", "e (≈ 2,718)"],
-    correct: 2,
-    explanation: "ln(x) est le logarithme népérien : sa base est e ≈ 2,718.",
-  },
-  {
-    question: "7️⃣ Si log(2) ≈ 0,3 alors log(200) = ?",
-    options: ["0,6", "2,3", "3,3"],
-    correct: 1,
-    explanation: "log(200) = log(2) + log(100) = 0,3 + 2 = 2,3.",
-  },
-  {
-    question: "8️⃣ Si log(x) = 2, alors x = ?",
-    options: ["100", "10", "1"],
-    correct: 0,
-    explanation: "log(x)=2 signifie que 10² = x, donc x = 100.",
-  },
-  {
-    question: "9️⃣ Quelle est la formule du changement de base ?",
-    options: [
-      "log_a(x) = log_b(x) / log_b(a)",
-      "log_a(x) = log_b(a) / log_b(x)",
-      "log_a(x) = log_b(x) × log_b(a)"
-    ],
-    correct: 0,
-    explanation:
-      "Formule du changement de base : log_a(x) = log_b(x) / log_b(a).",
-  },
-  {
-    question: "🔟 ln(e⁴) = ?",
-    options: ["4", "e⁴", "1/4"],
-    correct: 0,
-    explanation: "ln(e⁴) = 4 car ln et e sont inverses : ln(e^x) = x.",
-  },
+/* ---------- Banque de questions ---------- */
+const questions = [
+  { question:"1️⃣ Propriété du produit ?", options:["log(ab)=loga×logb","log(ab)=loga+logb","log(ab)=loga−logb"], correct:1,
+    explanation:"Produit → on additionne : log(a×b) = log a + log b."},
+
+  { question:"2️⃣ Domaine : ln(2x−1) défini si…", options:["x > 1/2","x ≥ 0","x > 0"], correct:0,
+    explanation:"2x−1 > 0 ⇒ x > 1/2."},
+
+  { question:"3️⃣ log(10) = ?", options:["1","10","0"], correct:0,
+    explanation:"log signifie base 10 : 10¹ = 10 ⇒ log(10) = 1."},
+
+  { question:"4️⃣ Propriété du quotient ?", options:["log(a/b)=loga+logb","log(a/b)=loga−logb","log(a/b)=loga×logb"], correct:1,
+    explanation:"Quotient → on soustrait : log(a/b) = log a − log b."},
+
+  { question:"5️⃣ log_a(x^r) = ?", options:["r·log_a(x)","x·log_a(r)","r / log_a(x)"], correct:0,
+    explanation:"Puissance : l’exposant descend → r · log_a(x)."},
+
+  { question:"6️⃣ Base de ln(x) ?", options:["10","2","e (≈ 2,718)"], correct:2,
+    explanation:"ln est en base e ≈ 2,718 (logarithme népérien)."},
+
+  { question:"7️⃣ log(2)≈0,3 → log(200)= ?", options:["0,6","2,3","3,3"], correct:1,
+    explanation:"log(200) = log(2) + log(100) = 0,3 + 2 = 2,3."},
+
+  { question:"8️⃣ log(x)=2 ⇒ x = ?", options:["100","10","1"], correct:0,
+    explanation:"log base 10 : 10² = x ⇒ x = 100."},
+
+  { question:"9️⃣ Changement de base ?", options:[
+      "log_a x = log_b x / log_b a",
+      "log_a x = log_b a / log_b x",
+      "log_a x = log_b x · log_b a"
+    ], correct:0,
+    explanation:"log_a x = (log_b x) / (log_b a)."},
+
+  { question:"🔟 ln(e⁴) = ?", options:["4","e⁴","1/4"], correct:0,
+    explanation:"ln(e^x) = x ⇒ ln(e⁴) = 4."}
 ];
 
+/* ---------- État ---------- */
 let current = 0;
 let score = 0;
+let answered = false;
+
 let voiceEnabled = false;
-let synth = window.speechSynthesis;
+const synth = window.speechSynthesis;
 
-// Sélecteurs DOM
+/* ---------- Sélecteurs DOM ---------- */
 const questionTitle = document.getElementById("questionTitle");
-const optionsDiv = document.getElementById("options");
-const feedbackDiv = document.getElementById("feedback");
-const nextBtn = document.getElementById("nextQuestion");
+const optionsDiv     = document.getElementById("options");
+const feedbackDiv    = document.getElementById("feedback");
+const nextBtn        = document.getElementById("nextQuestion");
 const toggleVoiceBtn = document.getElementById("toggleVoice");
-const progressDiv = document.getElementById("progress");
+const progressDiv    = document.getElementById("progress");
 
+/* ---------- Initialisation ---------- */
 loadQuestion();
+wireControls();
 
-// -------------------------
-// Fonctions principales
-// -------------------------
+/* ---------- Fonctions principales ---------- */
 function loadQuestion() {
+  answered = false;
   feedbackDiv.innerHTML = "";
+  nextBtn.disabled = true;
+
   const q = questions[current];
   questionTitle.textContent = q.question;
   optionsDiv.innerHTML = "";
 
   q.options.forEach((opt, i) => {
-    const btn = document.createElement("div");
-    btn.classList.add("option");
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "option";
     btn.textContent = opt;
+    btn.setAttribute("data-index", i);
     btn.onclick = () => checkAnswer(i);
     optionsDiv.appendChild(btn);
   });
@@ -120,32 +84,41 @@ function loadQuestion() {
 }
 
 function checkAnswer(choice) {
-  const q = questions[current];
-  const allOptions = document.querySelectorAll(".option");
+  if (answered) return;
+  answered = true;
+  nextBtn.disabled = false;
 
-  allOptions.forEach((opt, i) => {
+  const q = questions[current];
+  const all = optionsDiv.querySelectorAll(".option");
+
+  all.forEach((opt, i) => {
     opt.onclick = null;
     if (i === q.correct) opt.classList.add("correct");
     else if (i === choice) opt.classList.add("wrong");
+    // on empêche le focus clavier d’appuyer encore
+    opt.setAttribute("disabled", "disabled");
   });
 
-  const correct = choice === q.correct;
-  if (correct) {
-    feedbackDiv.innerHTML = "✅ Correct !";
-    speak("Bien joué ! C’est la bonne réponse.");
+  if (choice === q.correct) {
     score++;
+    feedbackDiv.innerHTML = "✅ Correct !";
+    speak("Bien joué, c'est correct !");
   } else {
-    feedbackDiv.innerHTML = `❌ Faux. Regarde l’explication : <br>${q.explanation}`;
-    speak("Ce n’est pas tout à fait juste, écoute : " + q.explanation);
+    feedbackDiv.innerHTML = `❌ Faux. Explication : <br>${q.explanation}`;
+    speak("Ce n'est pas tout à fait juste. Écoute : " + q.explanation);
   }
 }
 
 nextBtn.onclick = () => {
+  if (!answered) {
+    pulse(nextBtn);
+    return;
+  }
   if (current < questions.length - 1) {
     current++;
     loadQuestion();
   } else {
-    showResult();
+    endQuiz();
   }
 };
 
@@ -155,98 +128,71 @@ toggleVoiceBtn.onclick = () => {
   if (voiceEnabled) speak("La voix du prof Spilerix est activée. Bonne chance !");
 };
 
-// -------------------------
-// Synthèse vocale 🇧🇪
-// -------------------------
+/* ---------- Voix masculine belge (aucune voix ailleurs) ---------- */
 function speak(text) {
   if (!voiceEnabled) return;
-  if (synth.speaking) synth.cancel();
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = "fr-BE";
-  utter.pitch = 1;
-  utter.rate = 0.98;
-  utter.volume = 1;
-  synth.speak(utter);
+  try {
+    if (synth.speaking) synth.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "fr-BE";  // accent belge
+    u.pitch = 1;
+    u.rate  = 0.98;
+    u.volume = 1;
+    synth.speak(u);
+  } catch { /* pas grave si refus navigateur */ }
 }
 
-// -------------------------
-// Score + certificat
-// -------------------------
-function showResult() {
-  const pourcentage = Math.round((score / questions.length) * 100);
-  localStorage.setItem("dernierScore", pourcentage);
+/* ---------- Fin de quiz : popup nom → certificat ---------- */
+function endQuiz() {
+  const pct = Math.round((score / questions.length) * 100);
+  localStorage.setItem("dernierScore", String(pct));
 
-  questionTitle.textContent = "🎉 Test terminé !";
-  optionsDiv.innerHTML = "";
-  feedbackDiv.innerHTML = "";
+  // Popup de nom (mobile-friendly)
+  const overlay = document.createElement("div");
+  overlay.style.cssText = "position:fixed;inset:0;background:#0009;display:flex;align-items:center;justify-content:center;z-index:1000;padding:14px;";
+  overlay.innerHTML = `
+    <div style="background:#151529;border:1px solid #2c2c52;border-radius:16px;padding:18px;max-width:360px;width:100%;text-align:center;color:#eaf2ff;">
+      <h3 style="margin:0 0 8px;">🎓 Générer mon certificat</h3>
+      <p style="opacity:.85;margin:0 0 10px;">Entre ton prénom pour l’afficher sur le diplôme :</p>
+      <input id="certNameInput" class="input" placeholder="ex: Samir" style="text-align:center;margin-bottom:10px;">
+      <div style="display:flex;gap:10px;justify-content:center;">
+        <button id="certOk" class="btn vert">Valider</button>
+        <button id="certSkip" class="btn">Passer</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
 
-  const resultBox = document.createElement("div");
-  resultBox.classList.add("card");
-  resultBox.style.textAlign = "center";
+  const ok   = overlay.querySelector("#certOk");
+  const skip = overlay.querySelector("#certSkip");
 
-  resultBox.innerHTML = `
-    <h2>Résultat final</h2>
-    <canvas id="scoreCanvas" width="200" height="200"></canvas>
-    <p id="scoreText" style="font-size:1.4em;margin-top:10px;">${pourcentage}% de réussite</p>
-    <p style="opacity:0.8;">${getMessage(pourcentage)}</p>
-    <div class="row" style="justify-content:center;margin-top:20px;gap:10px;">
-      <a href="exercices.html" class="btn vert">🔁 Recommencer</a>
-      <a href="certificat.html" class="btn certif-btn">🎓 Voir mon certificat</a>
-    </div>
-  `;
-  feedbackDiv.appendChild(resultBox);
-  nextBtn.style.display = "none";
-
-  drawScoreCircle(pourcentage);
-  speak(`Bravo ! Tu as obtenu ${pourcentage} pour cent.`);
+  ok.onclick = () => {
+    const name = (overlay.querySelector("#certNameInput").value || "Élève").trim();
+    localStorage.setItem("certName", name);
+    location.href = "certificat.html";
+  };
+  skip.onclick = () => {
+    localStorage.setItem("certName", "Élève");
+    location.href = "certificat.html";
+  };
 }
 
-function getMessage(score) {
-  if (score === 100) return "🌟 Excellent ! Tu maîtrises parfaitement les logarithmes.";
-  if (score >= 80) return "💪 Très bon niveau ! Continue comme ça.";
-  if (score >= 60) return "👌 Pas mal du tout, revois quelques formules.";
-  if (score >= 40) return "🧩 Les bases sont là, continue ton effort.";
-  return "🕹️ Courage ! Reprends les cours et tu progresseras vite.";
-}
-
-function drawScoreCircle(pourcentage) {
-  const canvas = document.getElementById("scoreCanvas");
-  const ctx = canvas.getContext("2d");
-  const radius = 80;
-  const lineWidth = 10;
-  let progress = 0;
-
-  function animateCircle() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.beginPath();
-    ctx.arc(100, 100, radius, 0, 2 * Math.PI);
-    ctx.strokeStyle = "#333";
-    ctx.lineWidth = lineWidth;
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.arc(
-      100,
-      100,
-      radius,
-      -Math.PI / 2,
-      (-Math.PI / 2) + (2 * Math.PI * progress) / 100
-    );
-    ctx.strokeStyle = "#a88bff";
-    ctx.lineWidth = lineWidth;
-    ctx.lineCap = "round";
-    ctx.stroke();
-
-    ctx.fillStyle = "#fff";
-    ctx.font = "bold 24px Inter";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(`${Math.round(progress)}%`, 100, 100);
-
-    if (progress < pourcentage) {
-      progress += 1;
-      requestAnimationFrame(animateCircle);
+/* ---------- Accessibilité & confort ---------- */
+function wireControls() {
+  // ENTER pour “Suivant” si répondu
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      if (!answered) return;
+      nextBtn.click();
     }
-  }
-  animateCircle();
+  });
+}
+
+/* ---------- Petit effet visuel si on clique Suivant sans répondre ---------- */
+function pulse(el) {
+  el.style.transform = "scale(1.04)";
+  el.style.boxShadow = "0 0 12px #67ddb5";
+  setTimeout(() => {
+    el.style.transform = "";
+    el.style.boxShadow = "";
+  }, 180);
 }
