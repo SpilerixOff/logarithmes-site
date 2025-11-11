@@ -8,7 +8,7 @@ html{background:var(--bg)}
 body{margin:0;color:var(--ink);font-family:Inter,system-ui,Segoe UI,Roboto}
 a{color:var(--b1);text-decoration:none} a:hover{text-decoration:underline}
 .container{max-width:1120px;margin:0 auto;padding:16px;position:relative;z-index:1}
-.nav{position:sticky;top:0;z-index:6;background:#0b1423cc;backdrop-filter:blur(10px);border-bottom:1px solid #182334}
+.nav{position:sticky;top:0;z-index:6;background:#0b1423cc;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .nav-inner{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 16px}
 .brand{font-weight:900}
 .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
@@ -16,14 +16,16 @@ a{color:var(--b1);text-decoration:none} a:hover{text-decoration:underline}
 .btn.alt{background:linear-gradient(180deg,#8a7dff,#6b5bff);border:none}
 .btn.safe{background:linear-gradient(180deg,#67ddb5,#2fc28d);color:#06281e;border:none;font-weight:800}
 .btn.warn{background:linear-gradient(180deg,#ffd166,#ffb83b);color:#221a00;border:none;font-weight:900}
-.card{background:#0e1521;border:1px solid #182334;border-radius:16px;padding:14px;margin-top:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:12px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
-.small{color:#a6b6c9;font-size:14px}
+.small{color:var(--muted);font-size:14px}
 .input{width:100%;padding:10px 12px;border-radius:12px;border:1px solid #22324a;background:#0b1423;color:#eaf2ff}
 .badge{display:inline-block;background:#101a2a;border:1px solid #1f2f47;color:#b7c7e2;border-radius:999px;padding:4px 10px;font-size:12px;margin-right:6px}
 canvas.bg{position:fixed;inset:0;z-index:0;display:block}
+.tutor{position:fixed;left:50%;transform:translateX(-50%);bottom:84px;z-index:7;width:min(780px,94%);background:#0e1521;border:1px solid #22324a;border-radius:16px;padding:12px;box-shadow:0 18px 48px -18px #000c;display:none}
+.t-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.t-close{background:#1a2336;border:1px solid #2a3b5c;color:#bcd; width:36px; height:36px;border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer}
 .step{padding:8px;border-radius:10px;margin:6px 0;border:1px dashed #2a3d5b;animation:fade .35s ease}
-.hl{background:#182a46;border:1px solid #284065;border-radius:8px;padding:2px 6px}
 .pulse{animation:pulse 1s ease infinite}
 @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 @keyframes pulse{0%{box-shadow:0 0 0 0 #8a7dff66}70%{box-shadow:0 0 0 14px #8a7dff00}100%{box-shadow:0 0 0 0 #8a7dff00}}

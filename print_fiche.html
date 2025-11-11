@@ -1,3 +1,11 @@
-<!doctype html><html><head><meta charset="utf-8"><title>PDF</title></head><body>
-<p>Utilise ton print_fiche.html KaTeX actuel (v14+). Ici, simple placeholder.</p>
-</body></html>
+<!doctype html><html lang='fr'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1'/>
+<title>Fiche imprimable — Logarithmes (KaTeX)</title>
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css'><script defer src='https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js'></script><script defer src='https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js'></script>
+<style>@page{size:A4;margin:12mm}body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;margin:0;color:#0b0f14}h1{margin:0 0 6px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.box{border:1px solid #c6d4ea;border-radius:10px;padding:12px}.katex{font-size:1.02em}</style>
+<script>window.addEventListener('load',()=>{ renderMathInElement(document.body); setTimeout(()=>window.print(),200);});</script></head>
+<body><h1>Fiche — Logarithmes</h1><div class='grid'>
+<div class='box'><h3>Formules</h3><div>\( \log_a(xy)=\log_a x+\log_a y \)</div><div>\( \log_a(\tfrac{x}{y})=\log_a x-\log_a y \)</div><div>\( \log_a(x^r)=r\,\log_a x \)</div><div>\( \log_a x=\dfrac{\ln x}{\ln a} \)</div></div>
+<div class='box'><h3>Méthode équations (log)</h3><ol><li>Domaine</li><li>Regrouper</li><li>Exponentialiser</li><li>Vérifier</li></ol></div>
+<div class='box'><h3>Pièges</h3><ul><li>\( \log(x+y)\neq\log x+\log y \)</li><li>Oublier le domaine</li><li>Confondre log et ln</li></ul></div>
+<div class='box'><h3>Mini-exos</h3><ol><li>\( 4^x=34 \Rightarrow x=\dfrac{\ln 34}{\ln 4} \)</li><li>\( \log 7=\log(x^3-1)-\log(x-1)\Rightarrow x=2 \)</li><li>\( 2\ln(x+1)=\ln3+\ln(2x-1)\Rightarrow x=2 \)</li></ol></div>
+</div></body></html>
